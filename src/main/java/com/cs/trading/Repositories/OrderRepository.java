@@ -30,6 +30,10 @@ public class OrderRepository {
 	public Order findOrderById(int id) {
 		return jdbcTemplate.queryForObject("select * from orders where id=?", new OrderRowMapper(), id);
 	}
+
+	public List<Order> findOrderByTraderId(int traderId) {
+		return jdbcTemplate.query("select * from orders where ownerid=?", new OrderRowMapper(), traderId);
+	}
 	
 	class OrderRowMapper implements RowMapper<Order>
 	{
