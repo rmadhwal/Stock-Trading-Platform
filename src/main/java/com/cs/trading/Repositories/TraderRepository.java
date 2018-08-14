@@ -10,11 +10,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.cs.trading.Models.Role;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 
 @Repository
-public class UserRepository {
+public class TraderRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
@@ -37,6 +38,8 @@ public class UserRepository {
 			user.setLastName(rs.getString("lastname"));
 			user.setPassword(rs.getString("password"));
 			user.setPhone(rs.getLong("phone"));
+			user.setRole(Role.valueOf(rs.getString("role")));
+//			user.setRole(Role.toSetring(rs.getString("role"));
 			return user;
 		}
 	}

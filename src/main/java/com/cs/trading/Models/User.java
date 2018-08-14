@@ -7,7 +7,14 @@ public abstract class User {
 	private String password;
 	private long phone; 
 	private String email;
+	private Role role; 
 	
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -50,7 +57,7 @@ public abstract class User {
 	public User() {
 		super();
 	}
-	public User(int id, String firstName, String lastName, String password, long phone, String email) {
+	public User(int id, String firstName, String lastName, String password, long phone, String email, Role role) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -58,7 +65,10 @@ public abstract class User {
 		this.password = password;
 		this.phone = phone;
 		this.email = email;
+		this.role = role;
 	}
+
+	
 	
 	
 }
