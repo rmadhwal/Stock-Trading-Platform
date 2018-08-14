@@ -33,6 +33,10 @@ public class AdminRepoTest {
 		assertEquals(res, latestId + 1);	
 	}
 	
+//	public void doNotCreateNewTraderIfThereAreMissingFields() {
+//		int res = adminRepo.createTrader(new Trader(4, "Kevin",,"123456", 88776644, "kevin.lim@gmail.com", Role.valueOf("TRADER")));
+//		assertEquals(res, 0);	
+//	}
 	
 	@Test
 	public void listAllExistingTraderTest() {
