@@ -27,6 +27,10 @@ public class OrderService {
     }
 
     public List<Order> findOrdersByTraderId(int traderId) {
-	    return or.findOrderByTraderId(traderId);
+	    return or.findOrdersByTraderId(traderId);
+    }
+
+    public List<Order> findOrdersBySymbol(String tickerSymbol) {
+	    return or.findOrdersBySymbol(tickerSymbol);
     }
 }

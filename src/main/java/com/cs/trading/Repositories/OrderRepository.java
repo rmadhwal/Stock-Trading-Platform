@@ -31,8 +31,12 @@ public class OrderRepository {
 		return jdbcTemplate.queryForObject("select * from orders where id=?", new OrderRowMapper(), id);
 	}
 
-	public List<Order> findOrderByTraderId(int traderId) {
+	public List<Order> findOrdersByTraderId(int traderId) {
 		return jdbcTemplate.query("select * from orders where ownerid=?", new OrderRowMapper(), traderId);
+	}
+
+	public List<Order> findOrdersBySymbol(String tickerSymbol) {
+		return jdbcTemplate.query("select * from orders where tickersymbol=?", new OrderRowMapper(), tickerSymbol);
 	}
 	
 	class OrderRowMapper implements RowMapper<Order>

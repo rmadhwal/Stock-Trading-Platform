@@ -34,6 +34,11 @@ public class OrderController {
 	public List<Order> findOrderByTraderId(@PathVariable(value="traderid") int traderid) {
 		return os.findOrdersByTraderId(traderid);
 	}
+
+	@RequestMapping("/ordersBySymbol/{symbol}")
+	public List<Order> findOrderBySymbol(@PathVariable(value="symbol") String symbol) {
+		return os.findOrdersBySymbol(symbol);
+	}
 }
 
 
