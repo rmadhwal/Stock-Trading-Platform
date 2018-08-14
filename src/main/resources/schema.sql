@@ -8,3 +8,18 @@ create table USERS(
 	PHONE bigint(20) NOT NULL,
 	EMAIL varchar NOT NULL,
 	ROLE varchar NOT NULL);
+
+drop table ORDERS if exists;
+
+create table ORDERS(
+  ID bigint(20) NOT NULL AUTO_INCREMENT,
+  ORDERTYPE bigint(20) NOT NULL,
+  STATUS bigint(20) NOT NULL,
+  SIDE bigint(20) NOT NULL,
+  TIMESTAMP varchar NOT NULL,
+  FILLEDQUANTITY bigint(20) NOT NULL,
+  PRICE float NOT NULL,
+  QUANTITY bigint(20) NOT NULL,
+  TICKERSYMBOL varchar NOT NULL,
+  OWNERID bigint(20) NOT NULL
+)

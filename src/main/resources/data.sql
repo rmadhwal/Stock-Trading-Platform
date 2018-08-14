@@ -1,3 +1,4 @@
 insert into users(firstname, lastname, password, phone, email, role) values('Siva', 'Lim', '123456', '88776644','siva.lim@gmail.com','TRADER')
 insert into users(firstname, lastname, password, phone, email, role) values('XYZ', 'Tan', '123456', '99887766','xyz.tan@gmail.com','TRADER')
 insert into users(firstname, lastname, password, phone, email, role) values('Rohan','Wang','123456','77889988', 'rohan.wang@gmail.com','ADMIN')
+insert into orders(id, ordertype, status, side, timestamp, filledquantity, price, quantity, tickersymbol, ownerid) values('1','0','0','0','12-AUG-1995', '500','122.82', '1000', 'ATH', '3')

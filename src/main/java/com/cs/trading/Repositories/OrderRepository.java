@@ -39,20 +39,20 @@ public class OrderRepository {
 			order.setId(rs.getInt("id"));
 			order.setOrderType(OrderType.values()[rs.getInt("ordertype")]);
 			order.setStatus(Status.values()[rs.getInt("status")]);
-			order.setUsername(rs.getString("username"));
 			order.setSide(Side.values()[rs.getInt("side")]);
 
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 			try {
-				Date date = formatter.parse(rs.getString("date"));
+				Date date = formatter.parse(rs.getString("timestamp"));
 				order.setTimeStamp(date);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			order.setFilledQuantity(rs.getInt("filledQuantity"));
+			order.setFilledQuantity(rs.getInt("filledquantity"));
 			order.setPrice(rs.getDouble("price"));
 			order.setQuantity(rs.getInt("quantity"));
-			order.setTickerSymbol(rs.getString("tickerSymbol"));
+			order.setTickerSymbol(rs.getString("tickersymbol"));
+			order.setOwnerId(rs.getInt("ownerid"));
 			return order;
 
 		}
