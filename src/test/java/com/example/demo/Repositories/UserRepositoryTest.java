@@ -5,7 +5,6 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.cs.trading.Models.LimitOrder;
 import com.cs.trading.Models.Order;
 import com.cs.trading.Models.Role;
 import com.cs.trading.Models.Trader;
@@ -21,7 +20,7 @@ public class UserRepositoryTest {
 	
 	@Test
 	public void WhenPlaceCorrectOrderThenSuccessful() {
-		Order order = new LimitOrder();
+		Order order = new Order();
 		trader.placeOrder(order);
 		
 	}

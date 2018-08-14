@@ -37,9 +37,9 @@ public class OrderRepository {
 		public Order mapRow(ResultSet rs, int rowNum) throws SQLException{
 			Order order = new Order();
 			order.setId(rs.getInt("id"));
-			order.setOrderType(OrderType.values()[rs.getInt("ordertype")]);
-			order.setStatus(Status.values()[rs.getInt("status")]);
-			order.setSide(Side.values()[rs.getInt("side")]);
+			order.setOrderType(OrderType.valueOf(rs.getString("ordertype")));
+			order.setStatus(Status.valueOf(rs.getString("status")));
+			order.setSide(Side.valueOf(rs.getString("side")));
 
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
 			try {

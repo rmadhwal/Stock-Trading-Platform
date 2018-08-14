@@ -13,9 +13,9 @@ drop table ORDERS if exists;
 
 create table ORDERS(
   ID bigint(20) NOT NULL AUTO_INCREMENT,
-  ORDERTYPE bigint(20) NOT NULL,
-  STATUS bigint(20) NOT NULL,
-  SIDE bigint(20) NOT NULL,
+  ORDERTYPE varchar NOT NULL,
+  STATUS varchar NOT NULL,
+  SIDE varchar NOT NULL,
   TIMESTAMP varchar NOT NULL,
   FILLEDQUANTITY bigint(20) NOT NULL,
   PRICE float NOT NULL,
