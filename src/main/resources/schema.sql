@@ -31,3 +31,11 @@ create table COMPANIES(
   NAME varchar NOT NULL,
   SECTORID bigint(20)
 );
+
+drop table SECTORS if exists;
+
+create table SECTORS(
+  ID bigint(20) NOT NULL AUTO_INCREMENT,
+  NAME varchar NOT NULL,
+  DESCRIPTION varchar NOT NULL
+);

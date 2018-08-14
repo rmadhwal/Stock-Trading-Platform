@@ -22,6 +22,10 @@ public class Sector {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public Sector() {
+	}
+
 	public Sector(int id, String name, String description) {
 		super();
 		this.id = id;
