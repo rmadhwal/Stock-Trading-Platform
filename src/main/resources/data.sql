@@ -1,3 +1,3 @@
-insert into users(id, name, email) values(1, 'Siva', 'siva@gmail.com')
-insert into users(id, name, email) values(2, 'XYZ', 'xyz@gmail.com')
-insert into users(id, name, email) values(3, 'Rohan', 'rohan@gmail.com')
+insert into users(id, firstname, lastname, password, phone, email) values(1, 'Siva', 'Lim', '123456', '8877665544','siva.lim@gmail.com')
+insert into users(id, firstname, lastname, password, phone, email) values(2, 'XYZ', 'Tan', '123456', '9988776655','xyz.tan@gmail.com')
+insert into users(id, firstname, lastname, password, phone, email) values(3, 'Rohan','Wang','123456','7788998877', 'rohan.wang@gmail.com')

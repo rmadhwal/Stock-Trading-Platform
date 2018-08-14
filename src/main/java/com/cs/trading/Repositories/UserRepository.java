@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 
 @Repository
@@ -17,23 +18,26 @@ public class UserRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-//	public List<User> findAll() {
-//		return jdbcTemplate.query("select * from users", new UserRowMapper());
-//	}
-//	
-//	public User findUserById(int id) {
-//		return jdbcTemplate.queryForObject("select * from users where id=?", new UserRowMapper(), id);
-//	}
+	public List<User> findAll() {
+		return jdbcTemplate.query("select * from users", new UserRowMapper());
+	}
 	
-//	class UserRowMapper implements RowMapper<User>
-//	{
-//		@Override
-//		public User mapRow(ResultSet rs, int rowNum) throws SQLException{
-//			User user = new User();
-//			user.setId(rs.getInt("id"));
-//			user.setEmail(rs.getString("email"));
-//			user.setName(rs.getString("name"));
-//			return user;
-//		}
-//	}
+	public User findUserById(int id) {
+		return jdbcTemplate.queryForObject("select * from users where id=?", new UserRowMapper(), id);
+	}
+	
+	class UserRowMapper implements RowMapper<User>
+	{
+		@Override
+		public User mapRow(ResultSet rs, int rowNum) throws SQLException{
+			User user = new Trader();
+			user.setId(rs.getInt("id"));
+			user.setEmail(rs.getString("email"));
+			user.setFirstName(rs.getString("firstname"));
+			user.setLastName(rs.getString("lastname"));
+			user.setPassword(rs.getString("password"));
+			user.setPhone(rs.getLong("phone"));
+			return user;
+		}
+	}
 }

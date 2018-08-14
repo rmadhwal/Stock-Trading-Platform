@@ -1,9 +1,10 @@
 package com.cs.trading.Models;
 
 public abstract class User {
-	private String username;
+	private int id;
 	private String firstName;
 	private String lastName;
+	private String password;
 	private long phone; 
 	private String email;
 	
@@ -26,12 +27,6 @@ public abstract class User {
 		this.phone = phone;
 	}
 	
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
 	public String getEmail() {
 		return email;
 	}
@@ -39,15 +34,31 @@ public abstract class User {
 		this.email = email;
 	}
 	
-	public User(String username, String firstName, String lastName, long phone, String email) {
-		super();
-		this.username = username;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phone = phone;
-		this.email = email;
+	public int getId() {
+		return id;
 	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
 	public User() {
 		super();
 	}
+	public User(int id, String firstName, String lastName, String password, long phone, String email) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.phone = phone;
+		this.email = email;
+	}
+	
+	
 }
