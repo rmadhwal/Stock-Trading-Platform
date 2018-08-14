@@ -25,6 +25,7 @@ create table ORDERS(
   TICKERSYMBOL varchar NOT NULL,
   OWNERID bigint(20) NOT NULL,
   PRIMARY KEY (ID)
+  FOREIGN KEY (OWNERID) REFERENCES USERS(ID)
 );
 
 drop table COMPANIES if exists;
@@ -34,6 +35,7 @@ create table COMPANIES(
   NAME varchar NOT NULL,
   SECTORID bigint(20),
   PRIMARY KEY (SYMBOL)
+  FOREIGN KEY (SECTORID) REFERENCES SECTORS(ID)
 );
 
 drop table SECTORS if exists;
