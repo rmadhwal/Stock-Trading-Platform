@@ -6,4 +6,5 @@ create table USERS(
 	LASTNAME varchar NOT NULL,
 	PASSWORD varchar NOT NULL,
 	PHONE bigint(20) NOT NULL,
-	EMAIL varchar NOT NULL);
+	EMAIL varchar NOT NULL,
+	ROLE varchar NOT NULL);
