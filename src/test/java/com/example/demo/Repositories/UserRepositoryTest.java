@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.cs.trading.Models.LimitOrder;
 import com.cs.trading.Models.Order;
+import com.cs.trading.Models.Role;
 import com.cs.trading.Models.Trader;
 
 public class UserRepositoryTest {
@@ -15,7 +16,7 @@ public class UserRepositoryTest {
 	
 	@Before
 	public void init() {
-		trader = new Trader(1, "Siva", "Lim", "123456", 88776644, "siva.lim@gmail.com");
+		trader = new Trader(1, "Siva", "Lim", "123456", 88776644, "siva.lim@gmail.com", Role.TRADER);
 	}
 	
 	@Test

@@ -9,22 +9,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cs.trading.Models.User;
-import com.cs.trading.Repositories.UserRepository;
+import com.cs.trading.Repositories.TraderRepository;
 
 @RestController
 public class UserController {
 	
 	@Autowired
-	UserRepository ur;
+	TraderRepository tr;
 	
 	@RequestMapping(value="/users", method=RequestMethod.GET)
 	public List<User> returnAllUsers() {
-		return ur.findAll();
+		return tr.findAll();
 	}
 	
 	@RequestMapping("/users/{id}")
 	public User findUserById(@PathVariable(value="id") int id) {
-		return ur.findUserById(id);
+		return tr.findUserById(id);
 	}
 }
 
