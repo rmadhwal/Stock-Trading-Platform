@@ -49,7 +49,7 @@ public class OrderRepository {
 			order.setStatus(Status.valueOf(rs.getString("status")));
 			order.setSide(Side.valueOf(rs.getString("side")));
 
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
 			try {
 				Date date = formatter.parse(rs.getString("timestamp"));
 				order.setTimeStamp(date);

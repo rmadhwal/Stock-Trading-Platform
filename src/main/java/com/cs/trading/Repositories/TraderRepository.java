@@ -28,12 +28,16 @@ public class TraderRepository {
 	}
 
 	public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, int filledQuantity, double price, int quantity, String tickerSymbol, int traderId){
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
 		String timestampString = formatter.format(timestamp);
 		String orderTypeString = orderType.name();
 		String statusString = status.name();
 		String sideString = side.name();
 		return jdbcTemplate.update("insert into orders( ordertype, status, side, timestamp, filledquantity, price, quantity, tickersymbol, ownerid) VALUES (?,?,?,?,?,?,?,?,?)",orderTypeString, statusString, sideString, timestampString, 0, price, quantity, tickerSymbol, traderId);
+	}
+
+	public int deleteOrder(int orderId) {
+		return jdbcTemplate.update("update orders SET status = ? WHERE id=?","CANCELLED", orderId);
 	}
 	
 	class UserRowMapper implements RowMapper<User>

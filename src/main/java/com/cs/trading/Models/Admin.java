@@ -7,8 +7,8 @@ public class Admin extends User{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Admin(int id, String firstName, String lastName, String password, long phone, String email, Role role) {
-		super(id, firstName, lastName, password, phone, email, role);
+	public Admin(int id, String firstName, String lastName, String password, long phone, String email) {
+		super(id, firstName, lastName, password, phone, email, Role.ADMIN);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -31,7 +31,7 @@ public class AdminRepoTest {
 	
 	@Test
 	public void whenCreateNewTraderThenSuccessTest() {
-		Trader trader = new Trader("Kevin", "Lim", "123456", 88776644, "kevin.lim@gmail.com", Role.valueOf("TRADER"));
+		Trader trader = new Trader("Kevin", "Lim", "123456", 88776644, "kevin.lim@gmail.com");
 		int latestId = adminRepo.findLatestId();
 		int res = adminRepo.createTrader(trader);
 		assertEquals(res, latestId + 1);	
