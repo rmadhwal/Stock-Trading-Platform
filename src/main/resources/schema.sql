@@ -22,7 +22,7 @@ create table ORDERS(
   QUANTITY bigint(20) NOT NULL,
   TICKERSYMBOL varchar NOT NULL,
   OWNERID bigint(20) NOT NULL
-)
+);
 
 drop table COMPANIES if exists;
 
@@ -30,4 +30,4 @@ create table COMPANIES(
   SYMBOL varchar NOT NULL,
   NAME varchar NOT NULL,
 
-)
+);

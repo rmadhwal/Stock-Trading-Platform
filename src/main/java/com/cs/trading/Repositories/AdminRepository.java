@@ -10,20 +10,19 @@ import com.cs.trading.Models.Trader;
 
 
 @Repository
-public class AdminRepsitory {
+public class AdminRepository {
 	
 		@Autowired
 		private JdbcTemplate jdbcTemplate;
 		
 		public int createTrader(Trader trader) {
-//			return 1;`
-			return jdbcTemplate.update("INSERT INTO schema.users (firstname, lastname, password, phone, email, role) VALUES (?,?,?,?,?,?)",
-					new Object[] {trader.getFirstName(),
+			return jdbcTemplate.update("INSERT INTO users (firstname, lastname, password, phone, email, role) VALUES (?,?,?,?,?,?)",
+					trader.getFirstName(),
 					trader.getLastName(),
 					trader.getPassword(),
 					trader.getPhone(),
 					trader.getEmail(),
-					trader.getRole()}	
+					trader.getRole()
 					);
 		}
 }
