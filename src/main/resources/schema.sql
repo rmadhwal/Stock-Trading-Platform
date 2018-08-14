@@ -29,5 +29,6 @@ drop table COMPANIES if exists;
 create table COMPANIES(
   SYMBOL varchar NOT NULL,
   NAME varchar NOT NULL,
+  SECTORID bigint(20)
 
 )
