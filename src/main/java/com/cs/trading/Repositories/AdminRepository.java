@@ -2,6 +2,7 @@ package com.cs.trading.Repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -9,38 +10,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.cs.trading.Models.Company;
+import com.cs.trading.Models.Role;
 import com.cs.trading.Models.Sector;
 import com.cs.trading.Models.Trader;
+import com.cs.trading.Models.User;
 import com.cs.trading.Services.SectorService;
 
 
 
 @Repository
-public class AdminRepsitory {
+public class AdminRepository {
 	
 		@Autowired
 		private JdbcTemplate jdbcTemplate;
-		
 		@Autowired
 		SectorService sectorService;
 		
 		public int createTrader(Trader trader) {
-//			return 1;`
-//			return jdbcTemplate.update("INSERT INTO users (firstname, lastname, password, phone, email, role) VALUES (?,?,?,?,?,?)",
-//					new Object[] {trader.getFirstName(),
-//					trader.getLastName(),
-//					trader.getPassword(),
-//					trader.getPhone(),
-//					trader.getEmail(),
-//					trader.getRole()}	
-//					);
 			KeyHolder keyHolder = new GeneratedKeyHolder();
-			
 	    	jdbcTemplate.update(
 	    	    new PreparedStatementCreator() {
 	    	    	String sql = "INSERT INTO users (firstname, lastname, password, phone, email, role) VALUES (?,?,?,?,?,?)";
@@ -60,9 +53,16 @@ public class AdminRepsitory {
 	    	    keyHolder);
 	    	
 	    	return keyHolder.getKey().intValue();
-			
 		}
 		
+		public List<User> listAllTraders(){
+			return jdbcTemplate.query("select * from users", new UserRowMapper());
+		}
+		
+		public int findLatestId() {
+			return jdbcTemplate.queryForObject("select MAX(id) from users", Integer.class);
+		}
+
 		public int createCompany(Company company) {
 			
 			List<Sector> sectors = sectorService.findAll();
@@ -87,5 +87,22 @@ public class AdminRepsitory {
 		public int deleteCompany(Company company) {
 			
 			return 1;
+		}
+		
+		
+		class UserRowMapper implements RowMapper<User>
+		{
+			@Override
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException{
+				User user = new Trader();
+				user.setId(rs.getInt("id"));
+				user.setEmail(rs.getString("email"));
+				user.setFirstName(rs.getString("firstname"));
+				user.setLastName(rs.getString("lastname"));
+				user.setPassword(rs.getString("password"));
+				user.setPhone(rs.getLong("phone"));
+				user.setRole(Role.valueOf(rs.getString("role")));
+				return user;
+			}
 		}
 }

@@ -1,4 +1,4 @@
-package com.cs.trading.Repositories;
+package com.example.demo;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
