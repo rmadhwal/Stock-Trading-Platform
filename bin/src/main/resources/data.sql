@@ -3,4 +3,3 @@ insert into users(firstname, lastname, password, phone, email, role) values('XYZ
 insert into users(firstname, lastname, password, phone, email, role) values('Rohan','Wang','123456','77889988', 'rohan.wang@gmail.com','ADMIN')
 insert into orders(id, ordertype, status, side, timestamp, filledquantity, price, quantity, tickersymbol, ownerid) values('1','0','0','0','12-AUG-1995', '500','122.82', '1000', 'ATH', '3')
 insert into companies(symbol, name, sectorid) values('ATH','ATHENE','1')
-insert into sectors(id, name, description) values(0, 'IT', 'the technology sector')
