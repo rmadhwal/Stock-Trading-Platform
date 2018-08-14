@@ -22,6 +22,10 @@ public class Company {
 	public void setSector_id(int sector_id) {
 		this.sector_id = sector_id;
 	}
+
+	public Company() {
+	}
+
 	public Company(String symbol, String name, int sector_id) {
 		super();
 		this.symbol = symbol;
