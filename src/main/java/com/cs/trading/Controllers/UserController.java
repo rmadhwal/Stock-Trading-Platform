@@ -17,15 +17,15 @@ public class UserController {
 	@Autowired
 	UserRepository ur;
 	
-	@RequestMapping(value="/users", method=RequestMethod.GET)
-	public List<User> returnAllUsers() {
-		return ur.findAll();
-	}
-	
-	@RequestMapping("/users/{id}")
-	public User findUserById(@PathVariable(value="id") int id) {
-		return ur.findUserById(id);
-	}
+//	@RequestMapping(value="/users", method=RequestMethod.GET)
+//	public List<User> returnAllUsers() {
+//		return ur.findAll();
+//	}
+//	
+//	@RequestMapping("/users/{id}")
+//	public User findUserById(@PathVariable(value="id") int id) {
+//		return ur.findUserById(id);
+//	}
 }
 
 

@@ -17,23 +17,23 @@ public class UserRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	public List<User> findAll() {
-		return jdbcTemplate.query("select * from users", new UserRowMapper());
-	}
+//	public List<User> findAll() {
+//		return jdbcTemplate.query("select * from users", new UserRowMapper());
+//	}
+//	
+//	public User findUserById(int id) {
+//		return jdbcTemplate.queryForObject("select * from users where id=?", new UserRowMapper(), id);
+//	}
 	
-	public User findUserById(int id) {
-		return jdbcTemplate.queryForObject("select * from users where id=?", new UserRowMapper(), id);
-	}
-	
-	class UserRowMapper implements RowMapper<User>
-	{
-		@Override
-		public User mapRow(ResultSet rs, int rowNum) throws SQLException{
-			User user = new User();
-			user.setId(rs.getInt("id"));
-			user.setEmail(rs.getString("email"));
-			user.setName(rs.getString("name"));
-			return user;
-		}
-	}
+//	class UserRowMapper implements RowMapper<User>
+//	{
+//		@Override
+//		public User mapRow(ResultSet rs, int rowNum) throws SQLException{
+//			User user = new User();
+//			user.setId(rs.getInt("id"));
+//			user.setEmail(rs.getString("email"));
+//			user.setName(rs.getString("name"));
+//			return user;
+//		}
+//	}
 }
