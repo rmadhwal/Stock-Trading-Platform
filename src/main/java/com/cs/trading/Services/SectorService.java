@@ -16,5 +16,4 @@ public class SectorService {
 	public  List<Sector> findAll(){
 		return sectorRepo.findAll();
 	}
-	
 }

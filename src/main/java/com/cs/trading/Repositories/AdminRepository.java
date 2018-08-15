@@ -22,6 +22,7 @@ import com.cs.trading.Models.Role;
 import com.cs.trading.Models.Sector;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
+import com.cs.trading.Services.CompanyService;
 import com.cs.trading.Services.OrderService;
 import com.cs.trading.Services.SectorService;
 
@@ -35,32 +36,11 @@ public class AdminRepository {
 		
 		@Autowired
 		SectorService sectorService;
-		
+		@Autowired
+		CompanyService companyService;
 		@Autowired
 		OrderService orderService;
 		
-		public int createTrader(Trader trader) {
-			KeyHolder keyHolder = new GeneratedKeyHolder();
-	    	jdbcTemplate.update(
-	    	    new PreparedStatementCreator() {
-	    	    	String sql = "INSERT INTO users (firstname, lastname, password, phone, email, role) VALUES (?,?,?,?,?,?)";
-	    	    	@Override
-	    	        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-	    	            PreparedStatement pst =
-	    	                con.prepareStatement(sql, new String[] {"id"});
-	    	            pst.setString(1, trader.getFirstName());
-	    	            pst.setString(2, trader.getLastName());
-	    	            pst.setString(3, trader.getPassword());
-	    	            pst.setLong(4, trader.getPhone());
-	    	            pst.setString(5, trader.getEmail());
-	    	            pst.setString(6, trader.getRole().name());
-	    	            return pst;
-	    	        }
-	    	    },
-	    	    keyHolder);
-	    	
-	    	return keyHolder.getKey().intValue();
-		}
 		
 		public List<User> listAllTraders(){
 			return jdbcTemplate.query("select * from users", new UserRowMapper());
@@ -77,12 +57,14 @@ public class AdminRepository {
 		public int deleteExistingTrader(int traderId) {
 			//check if trader have orders in any status
 			List<Order> orderList = orderService.findOrdersByTraderId(traderId); 
-			if(orderList.size() > 0) {
+			if(orderList != null || orderList.size() > 0) {
 			  Object[] params = { traderId };
 			  int[] types = {Types.BIGINT};
-				return jdbcTemplate.update("DELETE FROM users WHERE id = ?", params, types);
+			  //delete order then user because userId is the foreign key to user
+			  jdbcTemplate.update("DELETE FROM orders WHERE ownerid = ?", params, types);
+			  return jdbcTemplate.update("DELETE FROM users WHERE id = ?", params, types);
 			}
-			return -1; 
+			return 0; 
 		}
 		
 
@@ -109,9 +91,38 @@ public class AdminRepository {
 
 		public int deleteCompany(Company company) {
 			
-			return 1;
+			List<Order> orders = orderService.findOrdersBySymbol(company.getSymbol());
+			if(orders.isEmpty()) {
+				return jdbcTemplate.update("DELETE FROM companies WHERE symbol=?",company.getSymbol());
+			}else {
+				return 0;
+			}
 		}
 		
+		public List<Sector> getAllMarketSectors() {
+			
+			return sectorService.findAll();
+		}
+		
+		public int updateMarketSector(Sector sector) {
+			
+			int res = jdbcTemplate.update("UPDATE sectors SET name=?, description=? WHERE id=?",
+								sector.getName(),
+								sector.getDescription(),
+								sector.getId()
+								);
+			return res;
+		}
+		
+		public int deleteMarketSector(Sector sector) {
+			
+			List<Company> companies = companyService.findCompanyBySector(sector.getId());
+			if(companies.isEmpty()) {
+				 return jdbcTemplate.update("DELETE FROM sectors WHERE id=?",sector.getId());
+			}else {
+				return 0;
+			}
+		}
 		
 		class UserRowMapper implements RowMapper<User>
 		{
