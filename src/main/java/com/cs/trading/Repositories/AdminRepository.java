@@ -89,6 +89,22 @@ public class AdminRepository {
 			return 1;
 		}
 		
+
+		public List<Sector> getAllMarketSectors() {
+			return sectorService.findAll();
+		}
+		
+		public int updateMarketSector(Sector sector) {
+			
+			int res = jdbcTemplate.update("UPDATE sectors SET name=?, description=?' WHERE id=?",
+								sector.getName(),
+								sector.getDescription(),
+								sector.getId()
+								);
+			return res;
+		}
+			
+		
 		
 		class UserRowMapper implements RowMapper<User>
 		{

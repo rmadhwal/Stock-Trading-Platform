@@ -3,6 +3,7 @@ package com.example.demo.Repositories;
 import static org.junit.Assert.assertEquals;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cs.trading.UsersDbApplication;
 import com.cs.trading.Models.Company;
 import com.cs.trading.Models.Role;
+import com.cs.trading.Models.Sector;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Repositories.AdminRepository;
 import com.cs.trading.Services.SectorService;
@@ -27,6 +29,15 @@ public class AdminRepoTest {
 	
 	@Autowired
 	SectorService sectorService;
+	
+	private Sector invalidSector;
+	private Sector validSector;
+	
+	@Before
+	public void init() {
+		validSector = new Sector(0,"invalid","n/a");
+		invalidSector = new Sector(1,"invalid","n/a");
+	}
 	
 	
 	@Test
@@ -65,6 +76,17 @@ public class AdminRepoTest {
 	
 	@Test
 	public void whenDeleteCompanyWithOutstandingOrderThenShouldReturnFail() {
+		
+	}
+	@Test
+	public void whenUpdateValidSectorThenShouldSuccess() {
+		
+		int res =  adminRepo.updateMarketSector(validSector);
+		assertEquals(1, res);	
+	}
+	
+	@Test
+	public void WhenUpdateNonexistentSectorThenShouldReturnFail() {
 		
 	}
 
