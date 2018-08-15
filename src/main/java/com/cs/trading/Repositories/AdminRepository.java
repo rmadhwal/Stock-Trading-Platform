@@ -67,63 +67,6 @@ public class AdminRepository {
 			return 0; 
 		}
 		
-
-		public int createCompany(Company company) {
-			
-			List<Sector> sectors = sectorService.findAll();
-			
-			for(Sector sector: sectors) {
-				if(sector.getId()==company.getSector_id()){
-					try {
-						return jdbcTemplate.update("INSERT INTO companies (symbol, name, sectorid) VALUES (?,?,?)",
-								company.getSymbol(),
-								company.getName(),
-								company.getSector_id()
-								);
-					}catch(DuplicateKeyException ex) {
-						return -1;
-					}
-				}
-			}
-			return -2;
-			
-		}
-
-		public int deleteCompany(Company company) {
-			
-			List<Order> orders = orderService.findOrdersBySymbol(company.getSymbol());
-			if(orders.isEmpty()) {
-				return jdbcTemplate.update("DELETE FROM companies WHERE symbol=?",company.getSymbol());
-			}else {
-				return 0;
-			}
-		}
-		
-		public List<Sector> getAllMarketSectors() {
-			
-			return sectorService.findAll();
-		}
-		
-		public int updateMarketSector(Sector sector) {
-			
-			int res = jdbcTemplate.update("UPDATE sectors SET name=?, description=? WHERE id=?",
-								sector.getName(),
-								sector.getDescription(),
-								sector.getId()
-								);
-			return res;
-		}
-		
-		public int deleteMarketSector(Sector sector) {
-			
-			List<Company> companies = companyService.findCompanyBySector(sector.getId());
-			if(companies.isEmpty()) {
-				 return jdbcTemplate.update("DELETE FROM sectors WHERE id=?",sector.getId());
-			}else {
-				return 0;
-			}
-		}
-		
 		class UserRowMapper implements RowMapper<User>
 		{
 			@Override
