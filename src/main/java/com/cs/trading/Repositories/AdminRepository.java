@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class AdminRepository {
 	
 		@Autowired
 		private JdbcTemplate jdbcTemplate;
+		
 		@Autowired
 		SectorService sectorService;
 		@Autowired
@@ -39,29 +41,6 @@ public class AdminRepository {
 		@Autowired
 		OrderService orderService;
 		
-		
-		public int createTrader(Trader trader) {
-			KeyHolder keyHolder = new GeneratedKeyHolder();
-	    	jdbcTemplate.update(
-	    	    new PreparedStatementCreator() {
-	    	    	String sql = "INSERT INTO users (firstname, lastname, password, phone, email, role) VALUES (?,?,?,?,?,?)";
-	    	    	@Override
-	    	        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-	    	            PreparedStatement pst =
-	    	                con.prepareStatement(sql, new String[] {"id"});
-	    	            pst.setString(1, trader.getFirstName());
-	    	            pst.setString(2, trader.getLastName());
-	    	            pst.setString(3, trader.getPassword());
-	    	            pst.setLong(4, trader.getPhone());
-	    	            pst.setString(5, trader.getEmail());
-	    	            pst.setString(6, trader.getRole().name());
-	    	            return pst;
-	    	        }
-	    	    },
-	    	    keyHolder);
-	    	
-	    	return keyHolder.getKey().intValue();
-		}
 		
 		public List<User> listAllTraders(){
 			return jdbcTemplate.query("select * from users", new UserRowMapper());
@@ -75,9 +54,17 @@ public class AdminRepository {
 			return jdbcTemplate.query("SELECT * FROM USERS where id =" + id, new UserRowMapper());
 		}
 		
-		public void deleteExistingTrader() {
-			//check if trader have orders in any status 
-			
+		public int deleteExistingTrader(int traderId) {
+			//check if trader have orders in any status
+			List<Order> orderList = orderService.findOrdersByTraderId(traderId); 
+			if(orderList != null || orderList.size() > 0) {
+			  Object[] params = { traderId };
+			  int[] types = {Types.BIGINT};
+			  //delete order then user because userId is the foreign key to user
+			  jdbcTemplate.update("DELETE FROM orders WHERE ownerid = ?", params, types);
+			  return jdbcTemplate.update("DELETE FROM users WHERE id = ?", params, types);
+			}
+			return 0; 
 		}
 		
 		class UserRowMapper implements RowMapper<User>

@@ -28,6 +28,16 @@ create table ORDERS(
   FOREIGN KEY (OWNERID) REFERENCES USERS(ID)
 );
 
+
+drop table SECTORS if exists;
+
+create table SECTORS(
+  ID bigint(20) NOT NULL AUTO_INCREMENT,
+  NAME varchar NOT NULL,
+  DESCRIPTION varchar NOT NULL,
+  PRIMARY KEY (ID)
+);
+
 drop table COMPANIES if exists;
 
 create table COMPANIES(
