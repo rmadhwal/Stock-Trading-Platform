@@ -49,7 +49,7 @@ public class OrderRepository {
 		return jdbcTemplate.query("select * from orders where tickersymbol=?", new OrderRowMapper(), tickerSymbol);
 	}
 
-	public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, int filledQuantity, double price, int quantity, String tickerSymbol, int traderId){
+	public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, int filledQuantity, Double price, int quantity, String tickerSymbol, int traderId){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
 		String timestampString = formatter.format(timestamp);
 		String orderTypeString = orderType.name();
