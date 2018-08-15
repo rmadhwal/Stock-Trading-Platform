@@ -31,4 +31,8 @@ public class TransactionService {
 	    return tr.findTransactionById(id);
     }
 
+    public int createNewTransaction(int buyOrderId, int sellOrderId, int quantity, double price, Date timestamp){
+	    return tr.addTransaction(buyOrderId, sellOrderId, quantity, price, timestamp);
+    }
+
 }

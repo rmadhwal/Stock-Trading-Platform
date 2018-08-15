@@ -45,23 +45,23 @@ public class OrderController {
 	}
 
 	@RequestMapping(value="/placeLimitBuyOrder", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
-	public int placeLimitBuyOrder(Principal principal, double price, int quantity, String tickerSymbol) {
+	public int placeLimitBuyOrder(Principal principal, Double price, Integer quantity, String tickerSymbol) {
 		return os.placeOrder(OrderType.LIMIT, Status.OPEN, Side.BUY, new Date(), 0, price, quantity, tickerSymbol, Integer.parseInt(principal.getName()));
 	}
 
 	@RequestMapping(value="/placeLimitSellOrder", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
-	public int placeLimitSellOrder(Principal principal, double price, int quantity, String tickerSymbol) {
-		return os.placeOrder(OrderType.LIMIT, Status.OPEN, Side.BUY, new Date(), 0, price, quantity, tickerSymbol, Integer.parseInt(principal.getName()));
+	public int placeLimitSellOrder(Principal principal, Double price, Integer quantity, String tickerSymbol) {
+		return os.placeOrder(OrderType.LIMIT, Status.OPEN, Side.SELL, new Date(), 0, price, quantity, tickerSymbol, Integer.parseInt(principal.getName()));
 	}
 
 	@RequestMapping(value="/placeMarketBuyOrder", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
-	public int placeMarketBuyOrder(Principal principal, double price, int quantity, String tickerSymbol) {
+	public int placeMarketBuyOrder(Principal principal, Double price, Integer quantity, String tickerSymbol) {
 		return os.placeOrder(OrderType.MARKET, Status.OPEN, Side.BUY, new Date(), 0, price, quantity, tickerSymbol, Integer.parseInt(principal.getName()));
 	}
 
 	@RequestMapping(value="/placeMarketSellOrder", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
-	public int placeMarketSellOrder(Principal principal, double price, int quantity, String tickerSymbol) {
-		return os.placeOrder(OrderType.MARKET, Status.OPEN, Side.BUY, new Date(), 0, price, quantity, tickerSymbol, Integer.parseInt(principal.getName()));
+	public int placeMarketSellOrder(Principal principal, Double price, Integer quantity, String tickerSymbol) {
+		return os.placeOrder(OrderType.MARKET, Status.OPEN, Side.SELL, new Date(), 0, price, quantity, tickerSymbol, Integer.parseInt(principal.getName()));
 	}
 
 	@RequestMapping(value="/deleteOrder/{id}", produces={MediaType.APPLICATION_JSON_VALUE})

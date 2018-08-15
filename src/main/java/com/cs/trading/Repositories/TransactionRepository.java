@@ -26,7 +26,13 @@ public class TransactionRepository {
 	public Transaction findTransactionById(int id) {
 		return jdbcTemplate.queryForObject("select * from transactions where id=?", new TransactionRowMapper(), id);
 	}
-	
+
+	public int addTransaction(int buyOrderId, int sellOrderId, int quantity, double price, Date timestamp){
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
+		String timestampString = formatter.format(timestamp);
+		return jdbcTemplate.update("insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) VALUES (?,?,?,?,?)",buyOrderId, sellOrderId, quantity, price, timestampString);
+	}
+
 	class TransactionRowMapper implements RowMapper<Transaction>
 	{
 		@Override
