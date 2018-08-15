@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
 
 @Component
@@ -15,7 +16,16 @@ public class TraderService {
     @Autowired
     TraderRepository tr;
 
+    @Autowired
+    OrderService os;
+
 	public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, int filledQuantity, double price, int quantity, String tickerSymbol, int traderId) {
         return tr.placeOrder(orderType, status, side, timestamp, filledQuantity, price, quantity, tickerSymbol, traderId);
+    }
+
+    public int deleteOrder(int orderId, int traderId) {
+	    if(os.findOrdersByTraderId(traderId).stream().anyMatch(item -> (item.getOwnerId() == traderId && item.getStatus() == Status.OPEN)))
+	        return tr.deleteOrder(orderId);
+	    return 0;
     }
 }

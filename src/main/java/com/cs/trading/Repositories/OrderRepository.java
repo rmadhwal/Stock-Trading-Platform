@@ -30,6 +30,14 @@ public class OrderRepository {
 	public Order findOrderById(int id) {
 		return jdbcTemplate.queryForObject("select * from orders where id=?", new OrderRowMapper(), id);
 	}
+
+	public List<Order> findOrdersByTraderId(int traderId) {
+		return jdbcTemplate.query("select * from orders where ownerid=?", new OrderRowMapper(), traderId);
+	}
+
+	public List<Order> findOrdersBySymbol(String tickerSymbol) {
+		return jdbcTemplate.query("select * from orders where tickersymbol=?", new OrderRowMapper(), tickerSymbol);
+	}
 	
 	class OrderRowMapper implements RowMapper<Order>
 	{
@@ -41,7 +49,7 @@ public class OrderRepository {
 			order.setStatus(Status.valueOf(rs.getString("status")));
 			order.setSide(Side.valueOf(rs.getString("side")));
 
-			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
 			try {
 				Date date = formatter.parse(rs.getString("timestamp"));
 				order.setTimeStamp(date);

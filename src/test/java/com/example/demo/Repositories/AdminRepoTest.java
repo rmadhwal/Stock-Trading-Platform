@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cs.trading.UsersDbApplication;
+import com.cs.trading.Models.Company;
 import com.cs.trading.Models.Role;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
@@ -39,7 +40,7 @@ public class AdminRepoTest {
 	
 	@Test
 	public void whenCreateNewTraderThenSuccess() {
-		Trader trader = new Trader("Kevin", "Lim", "123456", 88776644, "kevin.lim@gmail.com", Role.valueOf("TRADER"));
+		Trader trader = new Trader("Kevin", "Lim", "123456", 88776644, "kevin.lim@gmail.com");
 		int latestId = adminRepo.findLatestId();
 		int res = adminRepo.createTrader(trader);
 		assertEquals(res, latestId + 1);	
@@ -60,29 +61,29 @@ public class AdminRepoTest {
 	}
 	
 
-//	@Test
-//	public void whenCreateCompanyThenSuccess() {
-//		int res = adminRepo.createCompany(new Company("APPL","APPLE INC",0));
-//		assertEquals(1, res);	
-//	}
-//	
-//	@Test
-//	public void whenCreateDuplicateCompanyThenShouldReturnFail() {
-//		int res = adminRepo.createCompany(new Company("ATH","ATHENE",0));
-//		assertEquals(-1, res);	
-//	}
-//	
-//	@Test
-//	public void whenCreateCompanyWithInvalidSectorThenShouldReturnFail() {
-//		int res = adminRepo.createCompany(new Company("ATH","ATHENE",100));
-//		assertEquals(-2, res);	
-//	}
-//	
-//	@Test
-//	public void whenDeleteCompanyWithOutstandingOrderThenShouldReturnFail() {
-//		
+	@Test
+	public void whenCreateCompanyThenSuccess() {
+		int res = adminRepo.createCompany(new Company("APPL","APPLE INC",0));
+		assertEquals(1, res);	
+	}
+	
+	@Test
+	public void whenCreateDuplicateCompanyThenShouldReturnFail() {
+		int res = adminRepo.createCompany(new Company("ATH","ATHENE",0));
+		assertEquals(-1, res);	
+	}
+	
+	@Test
+	public void whenCreateCompanyWithInvalidSectorThenShouldReturnFail() {
+		int res = adminRepo.createCompany(new Company("ATH","ATHENE",100));
+		assertEquals(-2, res);	
+	}
+	
+	@Test
+	public void whenDeleteCompanyWithOutstandingOrderThenShouldReturnFail() {
+		
 	}
 
-//}
+}
 
 
