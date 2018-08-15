@@ -28,12 +28,29 @@ public class OrderService {
         return or.findOrdersBySide(side);
     }
 
-    private void matchLimitOrder(Order orderToBeMatched) {
-            LinkedList<Order> potentialMatchingOrders = new LinkedList<Order>();
+    private void matchOrder(Order orderToBeMatched) {
+        LinkedList<Order> potentialMatchingOrders = new LinkedList<Order>();
+        if(orderToBeMatched.getOrderType().equals(OrderType.LIMIT)) {
             if (orderToBeMatched.getSide() == Side.BUY) {
                 potentialMatchingOrders = findOrdersBySide(Side.SELL)
                         .stream()
-                        .filter(order -> order.getTickerSymbol().equals(orderToBeMatched.getTickerSymbol())  && order.getPrice() <= orderToBeMatched.getPrice() && order.getStatus().equals( Status.OPEN))
+                        .filter(order -> order.getTickerSymbol().equals(orderToBeMatched.getTickerSymbol()) && order.getPrice() <= orderToBeMatched.getPrice() && order.getStatus().equals(Status.OPEN))
+                        .sorted(Comparator.comparing(Order::getPrice))
+                        .collect(Collectors.toCollection(LinkedList::new));
+            } else {
+                List<Order> buyOrders = findOrdersBySide(Side.BUY);
+                potentialMatchingOrders = findOrdersBySide(Side.BUY)
+                        .stream()
+                        .filter(order -> order.getTickerSymbol().equals(orderToBeMatched.getTickerSymbol()) && order.getPrice() >= orderToBeMatched.getPrice() && order.getStatus().equals(Status.OPEN))
+                        .sorted(Comparator.comparing(Order::getPrice).reversed())
+                        .collect(Collectors.toCollection(LinkedList::new));
+            }
+        }
+        else {
+            if (orderToBeMatched.getSide() == Side.BUY) {
+                potentialMatchingOrders = findOrdersBySide(Side.SELL)
+                        .stream()
+                        .filter(order -> order.getTickerSymbol().equals(orderToBeMatched.getTickerSymbol()) && order.getOrderType().equals(OrderType.LIMIT) && order.getStatus().equals( Status.OPEN))
                         .sorted(Comparator.comparing(Order::getPrice))
                         .collect(Collectors.toCollection(LinkedList::new));
             }
@@ -41,12 +58,12 @@ public class OrderService {
                 List<Order> buyOrders = findOrdersBySide(Side.BUY);
                 potentialMatchingOrders = findOrdersBySide(Side.BUY)
                         .stream()
-                        .filter(order -> order.getTickerSymbol().equals(orderToBeMatched.getTickerSymbol()) && order.getSide() == Side.BUY && order.getPrice() >= orderToBeMatched.getPrice() && order.getStatus().equals(Status.OPEN))
+                        .filter(order -> order.getTickerSymbol().equals(orderToBeMatched.getTickerSymbol()) && order.getOrderType().equals(OrderType.LIMIT) && order.getStatus().equals(Status.OPEN))
                         .sorted(Comparator.comparing(Order::getPrice).reversed())
                         .collect(Collectors.toCollection(LinkedList::new));
             }
+        }
                 while (!potentialMatchingOrders.isEmpty() && orderToBeMatched.getStatus() != Status.FULFILLED) {
-                    Transaction newTransaction = new Transaction();
                     Order sellSideOrder;
                     Order buySideOrder;
                     if (orderToBeMatched.getSide() == Side.BUY) {
@@ -56,30 +73,29 @@ public class OrderService {
                         sellSideOrder = orderToBeMatched;
                         buySideOrder = potentialMatchingOrders.removeFirst();
                     }
-                    newTransaction.setBuyOrderId(buySideOrder.getId());
-                    newTransaction.setSellOrderId(sellSideOrder.getId());
-                    newTransaction.setPrice(sellSideOrder.getPrice());
                     int transactionQuantity;
                     if(sellSideOrder.getQuantity() - sellSideOrder. getFilledQuantity() > buySideOrder.getQuantity() - buySideOrder.getFilledQuantity()) {
                         transactionQuantity = buySideOrder.getQuantity() - buySideOrder.getFilledQuantity();
-                        newTransaction.setQuantityTraded(transactionQuantity);
                         buySideOrder.setFilledQuantity(buySideOrder.getQuantity());
                         buySideOrder.setStatus(Status.FULFILLED);
                         sellSideOrder.setFilledQuantity(sellSideOrder.getFilledQuantity()+transactionQuantity);
                     }
                     else {
                         transactionQuantity = sellSideOrder.getQuantity() - sellSideOrder. getFilledQuantity();
-                        newTransaction.setQuantityTraded(transactionQuantity);
                         sellSideOrder.setFilledQuantity(sellSideOrder.getQuantity());
                         sellSideOrder.setStatus(Status.FULFILLED);
                         buySideOrder.setFilledQuantity(buySideOrder.getFilledQuantity()+transactionQuantity);
                     }
-                    tr.addTransaction(buySideOrder.getId(), sellSideOrder.getId(), transactionQuantity, sellSideOrder.getPrice(), new Date());
+                    double transactionPrice;
+                    if(sellSideOrder.getOrderType().equals(OrderType.MARKET))
+                        transactionPrice = buySideOrder.getPrice();
+                    else
+                        transactionPrice = sellSideOrder.getPrice();
+                    tr.addTransaction(buySideOrder.getId(), sellSideOrder.getId(), transactionQuantity, transactionPrice, new Date());
                     updateOrder(buySideOrder);
                     updateOrder(sellSideOrder);
                 }
     }
-
 
 	public List<Order> listAllOrders() {
         return or.findAll();
@@ -99,7 +115,7 @@ public class OrderService {
 
     public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, Integer filledQuantity, Double price, Integer quantity, String tickerSymbol, int traderId) {
         int orderId =  or.placeOrder(orderType, status, side, timestamp, filledQuantity, price, quantity, tickerSymbol, traderId);
-        matchLimitOrder(new Order(orderId, orderType, status, side, timestamp, filledQuantity, price, quantity, tickerSymbol, traderId));
+        matchOrder(new Order(orderId, orderType, status, side, timestamp, filledQuantity, price, quantity, tickerSymbol, traderId));
         return orderId;
     }
 
