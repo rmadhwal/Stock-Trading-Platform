@@ -39,6 +39,28 @@ public class TraderRepository {
 	public int deleteOrder(int orderId) {
 		return jdbcTemplate.update("update orders SET status = ? WHERE id=?","CANCELLED", orderId);
 	}
+
+	public int updateOrder(int orderId, OrderType orderType, Double price, Integer quantity) {
+		if(orderType == null) {
+			if(price == null) {
+				return jdbcTemplate.update("update orders SET quantity = ? WHERE id=?", quantity, orderId);
+			}
+			else if(quantity == null)
+				return jdbcTemplate.update("update orders SET price = ? WHERE id=?", price, orderId);
+			else
+				return jdbcTemplate.update("update orders SET price = ?, quantity = ? WHERE id=?", price, quantity, orderId);
+		}
+		else if(price == null) {
+			if(quantity == null)
+				return jdbcTemplate.update("update orders SET ordertype = ? WHERE id=?", orderType.name(), orderId);
+			else
+				return jdbcTemplate.update("update orders SET ordertype = ?, quantity = ? WHERE id=?", orderType.name(), quantity, orderId);
+		}
+		else if(quantity == null)
+			return jdbcTemplate.update("update orders SET ordertype = ?, price = ? WHERE id=?", orderType.name(), price, orderId);
+		else
+			return jdbcTemplate.update("update orders SET ordertype = ?, price = ?, quantity = ? WHERE id=?", orderType.name(), price, quantity, orderId);
+	}
 	
 	class UserRowMapper implements RowMapper<User>
 	{
