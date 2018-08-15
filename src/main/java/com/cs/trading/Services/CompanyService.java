@@ -30,6 +30,10 @@ public class CompanyService {
 	public List<Company> findCompanyBySector(int sectorId){
 		return companyRepo.findCompanyBySector(sectorId);
 	}
+
+	public  List<Company> findCompanyByLetters(String letters){
+		return companyRepo.findCompanyByLetters(letters);
+	}
 	
 	public int createCompany(Company company) {
 		return companyRepo.createCompany(company);
@@ -37,6 +41,5 @@ public class CompanyService {
 	
 	public int deleteCompany(Company company) {
 		return companyRepo.deleteCompany(company);
-	}
-	
+	}	
 }

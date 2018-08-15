@@ -16,7 +16,9 @@ public class SectorService {
 	public  List<Sector> findAll(){
 		return sectorRepo.findAll();
 	}
-	
+	public Sector findSectorById(int id) {
+		return sectorRepo.findSectorById(id);
+	}
 	public int updateSector(Sector sector) {
 		return sectorRepo.updateMarketSector(sector);
 	}
@@ -28,4 +30,6 @@ public class SectorService {
 	public int deleteSector(Sector sector) {
 		return sectorRepo.deleteMarketSector(sector);
 	}
+	
+	
 }

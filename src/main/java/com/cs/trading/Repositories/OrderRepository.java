@@ -7,8 +7,14 @@ import com.cs.trading.Models.Order;
 import com.cs.trading.Models.Side;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.ParseException;
@@ -35,6 +41,10 @@ public class OrderRepository {
 		return jdbcTemplate.query("select * from orders where ownerid=?", new OrderRowMapper(), traderId);
 	}
 
+	public List<Order> findOrdersBySide(Side side) {
+		return jdbcTemplate.query("select * from orders where side=?", new OrderRowMapper(), side.name());
+	}
+
 	public List<Order> findOrdersBySymbol(String tickerSymbol) {
 		return jdbcTemplate.query("select * from orders where tickersymbol=?", new OrderRowMapper(), tickerSymbol);
 	}
@@ -45,11 +55,35 @@ public class OrderRepository {
 		String orderTypeString = orderType.name();
 		String statusString = status.name();
 		String sideString = side.name();
-		return jdbcTemplate.update("insert into orders( ordertype, status, side, timestamp, filledquantity, price, quantity, tickersymbol, ownerid) VALUES (?,?,?,?,?,?,?,?,?)",orderTypeString, statusString, sideString, timestampString, 0, price, quantity, tickerSymbol, traderId);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		final String INSERT_SQL = "insert into orders( ordertype, status, side, timestamp, filledquantity, price, quantity, tickersymbol, ownerid) VALUES (?,?,?,?,?,?,?,?,?)";
+		jdbcTemplate.update(new PreparedStatementCreator() {
+								@Override
+								public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+									PreparedStatement ps =
+											connection.prepareStatement(INSERT_SQL, new String[] {"id"});
+									ps.setString(1,orderTypeString);
+									ps.setString(2,statusString);
+									ps.setString(3,sideString);
+									ps.setString(4,timestampString);
+									ps.setInt(5,0);
+									ps.setDouble(6,price);
+									ps.setInt(7,quantity);
+									ps.setString(8,tickerSymbol);
+									ps.setInt(9,traderId);
+									return ps;
+								}
+							},
+				keyHolder);
+		return keyHolder.getKey().intValue();
 	}
 
-	public int deleteOrder(int orderId) {
-		return jdbcTemplate.update("update orders SET status = ? WHERE id=?","CANCELLED", orderId);
+	public int changeOrderStatus(int orderId, Status status) {
+		return jdbcTemplate.update("update orders SET status = ? WHERE id=?",status.name(), orderId);
+	}
+
+	public int updateOrder(Order order) {
+		return jdbcTemplate.update("update orders SET filledquantity = ?, ordertype = ?, price = ?, quantity = ?, status = ? WHERE id=?", order.getFilledQuantity(), order.getOrderType().name(), order.getPrice(), order.getQuantity(), order.getStatus().name(), order.getId());
 	}
 
 	public int updateOrder(int orderId, OrderType orderType, Double price, Integer quantity) {
