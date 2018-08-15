@@ -9,10 +9,7 @@ import com.cs.trading.Services.TraderService;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Date;
@@ -50,6 +47,12 @@ public class TraderController {
 	public int deleteOrder(Principal principal, @PathVariable(value="id") int id) {
 		return ts.deleteOrder(id, Integer.parseInt(principal.getName()));
 	}
+
+    @RequestMapping(value="/updateOrder", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
+    public int updateOrder(Principal principal, int orderId, @RequestParam(value = "orderType", required = false) OrderType orderType, @RequestParam(value = "price", required = false) Double price, @RequestParam(value = "quantity", required = false) Integer quantity) {
+        return ts.updateOrder(orderId, orderType, price, quantity, Integer.parseInt(principal.getName()));
+    }
+
 }
 
 
