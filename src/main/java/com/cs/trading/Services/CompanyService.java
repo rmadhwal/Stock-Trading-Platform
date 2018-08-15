@@ -42,4 +42,9 @@ public class CompanyService {
 	public int deleteCompany(Company company) {
 		return companyRepo.deleteCompany(company);
 	}	
+	
+	public int deleteCompanyBySymbol(String symbol) {
+		return companyRepo.deleteCompanyBySymbol(symbol);
+	
+	}
 }
