@@ -1,7 +1,7 @@
 insert into users(firstname, lastname, password, phone, email, role) values('Siva', 'Lim', '123456', '88776644','siva.lim@gmail.com','TRADER')
 insert into users(firstname, lastname, password, phone, email, role) values('XYZ', 'Tan', '123456', '99887766','xyz.tan@gmail.com','TRADER')
 insert into users(firstname, lastname, password, phone, email, role) values('Rohan','Wang','123456','77889988', 'rohan.wang@gmail.com','ADMIN')
-insert into users(id, firstname, lastname, password, phone, email, role) values(0, 'Rohaan','Wang','123456','77889988', 'rohan.wang@gmail.com','ADMIN')
+insert into users(id, firstname, lastname, password, phone, email, role) values(0, 'Kevin','Tang','123456','77889988', 'kevin.tang@gmail.com','ADMIN')
 insert into companies(symbol, name, sectorid) values('ATH','ATHENE','1')
 insert into companies(symbol, name, sectorid) values('FB','FACEBOOK','1')
 insert into sectors(id, name, description) values(0, 'IT', 'the technology sector')

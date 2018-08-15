@@ -12,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cs.trading.UsersDbApplication;
-import com.cs.trading.Models.Company;
-import com.cs.trading.Models.Sector;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 import com.cs.trading.Repositories.AdminRepository;
@@ -65,16 +63,16 @@ public class AdminRepoTest {
 	}
 	
 	@Test
-	public void deleteExistingTraderThenSuccess() {
+	public void deleteExistingTraderThenFail() {
 		//delete trader with id 999 who has an order 
 		int status = adminRepo.deleteExistingTrader(999);
-		assertEquals(1, status);
+		assertEquals(2, status);
 	}
 	
 	@Test
-	public void deleteTraderWithNoOrdersThenFail() {
+	public void deleteTraderWithNoOrdersThenSuccess() {
 		//delete trader with id 5 with no existing orders
-		int status = adminRepo.deleteExistingTrader(5);
+		int status = adminRepo.deleteExistingTrader(3);
 		assertEquals(0, status);
 	}
 	

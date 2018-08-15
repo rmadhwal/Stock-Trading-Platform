@@ -26,6 +26,11 @@ public class TraderRepository {
 	
 	public int createTrader(Trader trader) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
+//		jdbcTemplate.update("INSERT INTO companies (symbol, name, sectorid) VALUES (?,?,?)",
+//				company.getSymbol(),
+//				company.getName(),
+//				company.getSector_id()
+//				);
     	jdbcTemplate.update(
     	    new PreparedStatementCreator() {
     	    	String sql = "INSERT INTO users (firstname, lastname, password, phone, email, role) VALUES (?,?,?,?,?,?)";
