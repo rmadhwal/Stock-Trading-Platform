@@ -28,4 +28,15 @@ public class TraderService {
 	        return tr.deleteOrder(orderId);
 	    return 0;
     }
+
+    public int updateOrder(int orderId, OrderType orderType, Double price, Integer quantity, int traderId) {
+	    if(orderType == null && price == null && quantity == null)
+	        return 0;
+        if(os.findOrdersByTraderId(traderId).stream().anyMatch(item -> (item.getId() == orderId && item.getOwnerId() == traderId && item.getStatus() == Status.OPEN && (quantity == null || quantity > item.getFilledQuantity())))) {
+            return tr.updateOrder(orderId, orderType, price, quantity);
+        }
+        else {
+            return 0;
+        }
+    }
 }
