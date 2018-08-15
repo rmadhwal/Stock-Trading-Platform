@@ -17,6 +17,7 @@ import com.cs.trading.Models.Sector;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 import com.cs.trading.Repositories.AdminRepository;
+import com.cs.trading.Repositories.TraderRepository;
 import com.cs.trading.Services.SectorService;
 
 @RunWith(SpringRunner.class)
@@ -25,6 +26,9 @@ public class AdminRepoTest {
 
 	@Autowired
 	AdminRepository adminRepo;
+	
+	@Autowired
+	TraderRepository traderRepo;
 	
 	@Autowired
 	SectorService sectorService;
@@ -42,14 +46,14 @@ public class AdminRepoTest {
 	public void whenCreateNewTraderThenSuccess() {
 		Trader trader = new Trader("Kevin", "Lim", "123456", 88776644, "kevin.lim@gmail.com");
 		int latestId = adminRepo.findLatestId();
-		int res = adminRepo.createTrader(trader);
-		assertEquals(res, latestId + 1);	
+		int res = traderRepo.createTrader(trader);
+		assertEquals(latestId + 1, res);	
 	}
 
 	@Test
 	public void listAllExistingTrader() {
 		List<User> traderList = adminRepo.listAllTraders();
-		assertEquals(traderList.size(),initialListSize);
+		assertEquals(initialListSize, traderList.size());
 	}
 	
 	@Test
@@ -60,6 +64,19 @@ public class AdminRepoTest {
 		assertEquals("xyz.tan@gmail.com", trader.getEmail());
 	}
 	
+	@Test
+	public void deleteExistingTraderThenSuccess() {
+		//delete trader with id 999 who has an order 
+		int status = adminRepo.deleteExistingTrader(999);
+		assertEquals(1, status);
+	}
+	
+	@Test
+	public void deleteTraderWithNoOrdersThenFail() {
+		//delete trader with id 5 with no existing orders
+		int status = adminRepo.deleteExistingTrader(5);
+		assertEquals(0, status);
+	}
 	
 }
 
