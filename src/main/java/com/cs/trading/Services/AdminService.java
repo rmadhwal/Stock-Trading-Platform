@@ -14,7 +14,10 @@ import com.cs.trading.Repositories.AdminRepository;
 public class AdminService {
 	
 	@Autowired
+	CompanyService companyService;
+	@Autowired
 	AdminRepository adminRepo;
+	
 	
 	@Autowired
 	SectorService sectorService;
@@ -24,7 +27,7 @@ public class AdminService {
 	}
 	
 	public int createCompany(Company company) {
-		return adminRepo.createCompany(company);
+		return companyService.createCompany(company);
 	}
 	
 	
