@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.cs.trading.Models.Company;
+import com.cs.trading.Models.Order;
 import com.cs.trading.Models.Role;
 import com.cs.trading.Models.Sector;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
+import com.cs.trading.Services.OrderService;
 import com.cs.trading.Services.SectorService;
 
 
@@ -29,8 +32,12 @@ public class AdminRepository {
 	
 		@Autowired
 		private JdbcTemplate jdbcTemplate;
+		
 		@Autowired
 		SectorService sectorService;
+		
+		@Autowired
+		OrderService orderService;
 		
 		public int createTrader(Trader trader) {
 			KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -67,9 +74,15 @@ public class AdminRepository {
 			return jdbcTemplate.query("SELECT * FROM USERS where id =" + id, new UserRowMapper());
 		}
 		
-		public void deleteExistingTrader() {
-			//check if trader have orders in any status 
-			
+		public int deleteExistingTrader(int traderId) {
+			//check if trader have orders in any status
+			List<Order> orderList = orderService.findOrdersByTraderId(traderId); 
+			if(orderList.size() > 0) {
+			  Object[] params = { traderId };
+			  int[] types = {Types.BIGINT};
+				return jdbcTemplate.update("DELETE FROM users WHERE id = ?", params, types);
+			}
+			return -1; 
 		}
 		
 

@@ -60,6 +60,11 @@ public class AdminRepoTest {
 		assertEquals("xyz.tan@gmail.com", trader.getEmail());
 	}
 	
+	@Test
+	public void deleteExistingTrader() {
+		adminRepo.deleteExistingTrader(2);
+	}
+	
 
 	@Test
 	public void whenCreateCompanyThenSuccess() {
