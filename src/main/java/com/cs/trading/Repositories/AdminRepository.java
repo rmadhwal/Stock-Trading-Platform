@@ -16,10 +16,13 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.cs.trading.Models.Company;
+import com.cs.trading.Models.Order;
 import com.cs.trading.Models.Role;
 import com.cs.trading.Models.Sector;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
+import com.cs.trading.Services.CompanyService;
+import com.cs.trading.Services.OrderService;
 import com.cs.trading.Services.SectorService;
 
 
@@ -31,6 +34,11 @@ public class AdminRepository {
 		private JdbcTemplate jdbcTemplate;
 		@Autowired
 		SectorService sectorService;
+		@Autowired
+		CompanyService companyService;
+		@Autowired
+		OrderService orderService;
+		
 		
 		public int createTrader(Trader trader) {
 			KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -86,25 +94,38 @@ public class AdminRepository {
 
 		public int deleteCompany(Company company) {
 			
-			return 1;
+			List<Order> orders = orderService.findOrdersBySymbol(company.getSymbol());
+			if(orders.isEmpty()) {
+				return jdbcTemplate.update("DELETE FROM companies WHERE symbol=?",company.getSymbol());
+			}else {
+				return 0;
+			}
 		}
 		
-
 		public List<Sector> getAllMarketSectors() {
+			
 			return sectorService.findAll();
 		}
 		
 		public int updateMarketSector(Sector sector) {
 			
-			int res = jdbcTemplate.update("UPDATE sectors SET name=?, description=?' WHERE id=?",
+			int res = jdbcTemplate.update("UPDATE sectors SET name=?, description=? WHERE id=?",
 								sector.getName(),
 								sector.getDescription(),
 								sector.getId()
 								);
 			return res;
 		}
-			
 		
+		public int deleteMarketSector(Sector sector) {
+			
+			List<Company> companies = companyService.findCompanyBySector(sector.getId());
+			if(companies.isEmpty()) {
+				 return jdbcTemplate.update("DELETE FROM sectors WHERE id=?",sector.getId());
+			}else {
+				return 0;
+			}
+		}
 		
 		class UserRowMapper implements RowMapper<User>
 		{

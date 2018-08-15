@@ -1,15 +1,17 @@
 package com.cs.trading.Repositories;
 
 
-import com.cs.trading.Models.Company;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+import com.cs.trading.Models.Company;
+import com.cs.trading.Models.Sector;
 
 @Repository
 public class CompanyRepository {
@@ -22,6 +24,15 @@ public class CompanyRepository {
 	
 	public Company findCompanyBySymbol(String symbol) {
 		return jdbcTemplate.queryForObject("select * from companies where symbol=?", new CompanyRowMapper(), symbol);
+	}
+	
+	public List<Company> findCompanyBySector(int sectorId){
+		
+		return jdbcTemplate.query("select * from companies where sectorid=?", new CompanyRowMapper(), sectorId);
+	}
+	
+	public List<Company> findCompanyBySector(Sector sector){
+		return findCompanyBySector(sector.getId());
 	}
 	
 	class CompanyRowMapper implements RowMapper<Company>
