@@ -57,14 +57,11 @@ public class AdminRepository {
 		public int deleteExistingTrader(int traderId) {
 			//check if trader have orders in any status
 			List<Order> orderList = orderService.findOrdersByTraderId(traderId); 
-			if(orderList != null || orderList.size() > 0) {
-			  Object[] params = { traderId };
-			  int[] types = {Types.BIGINT};
-			  //delete order then user because userId is the foreign key to user
-			  jdbcTemplate.update("DELETE FROM orders WHERE ownerid = ?", params, types);
-			  return jdbcTemplate.update("DELETE FROM users WHERE id = ?", params, types);
+			if(orderList != null && orderList.size() > 0) {
+				//do not delete trader if there is existing order
+				return 2; 
 			}
-			return 0; 
+				return jdbcTemplate.update("DELETE FROM users WHERE id = ?", traderId);
 		}
 		
 		class UserRowMapper implements RowMapper<User>
