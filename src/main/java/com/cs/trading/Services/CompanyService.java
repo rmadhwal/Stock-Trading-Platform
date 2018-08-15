@@ -30,4 +30,13 @@ public class CompanyService {
 	public List<Company> findCompanyBySector(int sectorId){
 		return companyRepo.findCompanyBySector(sectorId);
 	}
+	
+	public int createCompany(Company company) {
+		return companyRepo.createCompany(company);
+	}
+	
+	public int deleteCompany(Company company) {
+		return companyRepo.deleteCompany(company);
+	}
+	
 }
