@@ -73,7 +73,7 @@ public class AdminRepoTest {
 	public void deleteTraderWithNoOrdersThenSuccess() {
 		//delete trader with id 5 with no existing orders
 		int status = adminRepo.deleteExistingTrader(3);
-		assertEquals(0, status);
+		assertEquals(1, status);
 	}
 	
 }

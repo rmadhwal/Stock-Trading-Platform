@@ -60,17 +60,8 @@ public class AdminRepository {
 			if(orderList != null && orderList.size() > 0) {
 				//do not delete trader if there is existing order
 				return 2; 
-			  //delete order then user because userId is the foreign key to user; same goes for transaction 
-//			  jdbcTemplate.update("DELETE FROM transactions inner join transactions.BUYORDERID =  orders.ownerid WHERE BUYORDERID = ?", traderId);
-//			  jdbcTemplate.update("DELETE FROM transactions WHERE BUYORDERID = ?", params, types);
-//			  jdbcTemplate.update("DELETE FROM transactions WHERE SELLORDERID = ?", params, types);
-//			  jdbcTemplate.update("DELETE FROM orders WHERE ownerid = ?", params, types);
-//			  return jdbcTemplate.update("DELETE FROM users, orders, transactions WHERE id = ?", params, types);
-			  
 			}
-				return jdbcTemplate.update("DELETE FROM orders WHERE ownerid = ?", traderId);
-//			}
-//			return 1;
+				return jdbcTemplate.update("DELETE FROM users WHERE id = ?", traderId);
 		}
 		
 		class UserRowMapper implements RowMapper<User>
