@@ -15,13 +15,12 @@ public class UserRepositoryTest {
 	
 	@Before
 	public void init() {
-		trader = new Trader(1, "Siva", "Lim", "123456", 88776644, "siva.lim@gmail.com", Role.TRADER);
+		trader = new Trader(1, "Siva", "Lim", "123456", 88776644, "siva.lim@gmail.com");
 	}
 	
 	@Test
 	public void WhenPlaceCorrectOrderThenSuccessful() {
 		Order order = new Order();
-		trader.placeOrder(order);
 		
 	}
 
