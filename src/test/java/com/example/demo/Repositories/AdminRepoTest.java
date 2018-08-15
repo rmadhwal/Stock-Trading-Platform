@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cs.trading.UsersDbApplication;
 import com.cs.trading.Models.Company;
-import com.cs.trading.Models.Role;
+import com.cs.trading.Models.Sector;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 import com.cs.trading.Repositories.AdminRepository;
@@ -29,11 +29,23 @@ public class AdminRepoTest {
 	@Autowired
 	SectorService sectorService;
 	
+	private Sector invalidSector;
+	private Sector validSector;
+	private Sector sectorWithCompanies;
+	private Sector sectorWithoutCompanies;
+	private Company companyWithoutOrders;
+	private Company companyWithOrders;
 	private List<User> traderList;
 	private int initialListSize; 
 	
 	@Before
 	public void init() {
+		validSector = new Sector(0,"invalid","n/a");
+		invalidSector = new Sector(999,"invalid","n/a");
+		sectorWithCompanies = new Sector(1,"invalid","n/a");
+		sectorWithoutCompanies = new Sector(2,"invalid","n/a");
+		companyWithoutOrders = new Company("COMPANY_WITH_ORDERS","test",44);
+		companyWithOrders = new Company("COMPANY_WITHOUT_ORDERS","test",44);
 		traderList = adminRepo.listAllTraders();
 		initialListSize = traderList.size(); 
 	}
@@ -45,7 +57,7 @@ public class AdminRepoTest {
 		int res = adminRepo.createTrader(trader);
 		assertEquals(res, latestId + 1);	
 	}
-	
+
 	@Test
 	public void listAllExistingTrader() {
 		List<User> traderList = adminRepo.listAllTraders();
@@ -60,7 +72,6 @@ public class AdminRepoTest {
 		assertEquals("xyz.tan@gmail.com", trader.getEmail());
 	}
 	
-
 	@Test
 	public void whenCreateCompanyThenSuccess() {
 		int res = adminRepo.createCompany(new Company("APPL","APPLE INC",0));
@@ -83,7 +94,42 @@ public class AdminRepoTest {
 	public void whenDeleteCompanyWithOutstandingOrderThenShouldReturnFail() {
 		
 	}
-
+	@Test
+	public void whenUpdateValidSectorThenShouldSuccess() {
+		
+		int res =  adminRepo.updateMarketSector(validSector);
+		assertEquals(1, res);	
+	}
+	
+	@Test
+	public void WhenUpdateNonexistentSectorThenShouldReturnFail() {
+		int res =  adminRepo.updateMarketSector(invalidSector);
+		assertEquals(0, res);	
+	}
+	
+	@Test
+	public void WhenDeleteValidSectorWithoutCompaniesThenShouldSuccess() {
+		int res = adminRepo.deleteMarketSector(sectorWithoutCompanies);
+		assertEquals(1, res);	
+	}
+	
+	@Test
+	public void WhenDeleteValidSectorWithCompaniesThenShouldFail() {
+		int res = adminRepo.deleteMarketSector(sectorWithCompanies);
+		assertEquals(0, res);	
+	}
+	
+	@Test
+	public void WhenDeleteCompanyWithoutOrdersThenShouldSuccess() {
+		int res = adminRepo.deleteCompany(companyWithOrders);
+		assertEquals(1, res);
+	}
+	
+	@Test
+	public void WhenDeleteCompanyWithOrdersThenShouldFail() {
+		int res = adminRepo.deleteCompany(companyWithoutOrders);
+		assertEquals(0, res);
+	}
 }
 
 
