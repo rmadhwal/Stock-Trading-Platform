@@ -28,15 +28,6 @@ create table ORDERS(
   FOREIGN KEY (OWNERID) REFERENCES USERS(ID)
 );
 
-drop table COMPANIES if exists;
-
-create table COMPANIES(
-  SYMBOL varchar NOT NULL,
-  NAME varchar NOT NULL,
-  SECTORID bigint(20),
-  PRIMARY KEY (SYMBOL),
-  FOREIGN KEY (SECTORID) REFERENCES SECTORS(ID)
-);
 
 drop table SECTORS if exists;
 
@@ -45,4 +36,14 @@ create table SECTORS(
   NAME varchar NOT NULL,
   DESCRIPTION varchar NOT NULL,
   PRIMARY KEY (ID)
+);
+
+drop table COMPANIES if exists;
+
+create table COMPANIES(
+  SYMBOL varchar NOT NULL,
+  NAME varchar NOT NULL,
+  SECTORID bigint(20),
+  PRIMARY KEY (SYMBOL),
+  FOREIGN KEY (SECTORID) REFERENCES SECTORS(ID)
 );

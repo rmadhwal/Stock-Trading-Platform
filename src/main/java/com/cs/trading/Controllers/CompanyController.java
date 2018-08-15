@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cs.trading.Models.Company;
@@ -21,11 +22,17 @@ public class CompanyController {
 	public List<Company> returnAllCompaniess() {
 		return cs.findAll();
 	}
+
+	@RequestMapping("/companies/sort")
+	public List<Company> findCompanyByLetters(@RequestParam(value="start_with") String letters) {
+		return cs.findCompanyByLetters(letters);
+	}
 	
 	@RequestMapping("/companies/{symbol}")
-	public Company findOrderById(@PathVariable(value="symbol") String symbol) {
+	public Company findCompanyById(@PathVariable(value="symbol") String symbol) {
 		return cs.findCompanyBySymbol(symbol);
 	}
+	
 }
 
 
