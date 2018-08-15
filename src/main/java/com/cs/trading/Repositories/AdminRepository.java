@@ -1,25 +1,18 @@
 package com.cs.trading.Repositories;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.cs.trading.Models.Company;
 import com.cs.trading.Models.Order;
 import com.cs.trading.Models.Role;
-import com.cs.trading.Models.Sector;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 import com.cs.trading.Services.CompanyService;
@@ -62,6 +55,12 @@ public class AdminRepository {
 				return 2; 
 			}
 				return jdbcTemplate.update("DELETE FROM users WHERE id = ?", traderId);
+		}
+		
+		public Date retrieveLatestTimeTraderLastOrder(int traderId) {
+			List<Order> orderList = orderService.findOrdersByTraderId(traderId);
+			Collections.sort(orderList);
+			return orderList.get(0).getTimeStamp(); 
 		}
 		
 		class UserRowMapper implements RowMapper<User>

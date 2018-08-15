@@ -2,6 +2,7 @@ package com.example.demo.Repositories;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -15,6 +16,7 @@ import com.cs.trading.UsersDbApplication;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 import com.cs.trading.Repositories.AdminRepository;
+import com.cs.trading.Repositories.OrderRepository;
 import com.cs.trading.Repositories.TraderRepository;
 import com.cs.trading.Services.SectorService;
 
@@ -27,6 +29,9 @@ public class AdminRepoTest {
 	
 	@Autowired
 	TraderRepository traderRepo;
+	
+	@Autowired
+	OrderRepository orderRepo;
 	
 	@Autowired
 	SectorService sectorService;
@@ -58,8 +63,8 @@ public class AdminRepoTest {
 	public void getInformationAboutTrader() {
 		//retrieve info about trader 2 
 		User trader = adminRepo.getTrader(2).get(0);
-		assertEquals(99887766,trader.getPhone());
-		assertEquals("xyz.tan@gmail.com", trader.getEmail());
+		assertEquals(traderList.get(2).getPhone(),trader.getPhone());
+		assertEquals(traderList.get(2).getEmail(), trader.getEmail());
 	}
 	
 	@Test
@@ -74,6 +79,14 @@ public class AdminRepoTest {
 		//delete trader with id 5 with no existing orders
 		int status = adminRepo.deleteExistingTrader(3);
 		assertEquals(1, status);
+	}
+	
+	@Test
+	public void findLatestTimeFromTraderIdThenSuccess() {
+		//delete trader with id 5 with no existing orders
+		int traderId = 999; 
+		Date date = adminRepo.retrieveLatestTimeTraderLastOrder(traderId);
+		assertEquals("10-Jul-2018 12:08:56.235", date.toString());
 	}
 	
 }

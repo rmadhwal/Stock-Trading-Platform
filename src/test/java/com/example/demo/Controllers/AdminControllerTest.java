@@ -1,4 +1,4 @@
-package com.example.demo.Services;
+package com.example.demo.Controllers;
 
 
 import static io.restassured.RestAssured.given;
@@ -23,7 +23,7 @@ import io.restassured.response.Response;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = UsersDbApplication.class)
-public class AdminServiceTest {
+public class AdminControllerTest {
 	
 	@LocalServerPort
 	private int serverPort;
