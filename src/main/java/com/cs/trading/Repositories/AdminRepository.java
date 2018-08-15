@@ -62,6 +62,16 @@ public class AdminRepository {
 		public int findLatestId() {
 			return jdbcTemplate.queryForObject("select MAX(id) from users", Integer.class);
 		}
+		
+		public List<User> getTrader(int id){
+			return jdbcTemplate.query("SELECT * FROM USERS where id =" + id, new UserRowMapper());
+		}
+		
+		public void deleteExistingTrader() {
+			//check if trader have orders in any status 
+			
+		}
+		
 
 		public int createCompany(Company company) {
 			

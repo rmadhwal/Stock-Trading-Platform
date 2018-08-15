@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cs.trading.Models.Role;
 import com.cs.trading.Models.Trader;
-import com.cs.trading.Repositories.AdminRepsitory;
+import com.cs.trading.Repositories.AdminRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = UsersDbApplication.class)
@@ -25,7 +25,5 @@ public class TraderControllerTest {
     public void init() {
         tr = new TraderRepository();
     }
-
-
 
 }
