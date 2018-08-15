@@ -20,7 +20,7 @@ create table ORDERS(
   SIDE varchar NOT NULL,
   TIMESTAMP varchar NOT NULL,
   FILLEDQUANTITY bigint(20) NOT NULL,
-  PRICE float NOT NULL,
+  PRICE float,
   QUANTITY bigint(20) NOT NULL,
   TICKERSYMBOL varchar NOT NULL,
   OWNERID bigint(20) NOT NULL,

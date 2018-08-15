@@ -26,7 +26,6 @@ public class CompanyRepository {
 	@Autowired
 	OrderService orderService;
 	@Autowired
-	
 	private JdbcTemplate jdbcTemplate;
 	
 	public List<Company> findAll() {
