@@ -36,10 +36,6 @@ public class OrderService {
         return or.findOrdersByType(type);
     }
 
-    public List<Order> findOrdersByStatus(Status status) {
-        return or.findOrdersByStatus(status);
-    }
-
     private void matchOrder(Order orderToBeMatched) {
         LinkedList<Order> potentialMatchingOrders = new LinkedList<Order>();
         if(orderToBeMatched.getOrderType().equals(OrderType.LIMIT)) {
