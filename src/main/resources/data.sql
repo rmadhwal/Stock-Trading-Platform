@@ -41,4 +41,6 @@ insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) va
 insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (16, 17, 50, 111.99, '07-Jul-2018 12:08:56.236')
 insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (16, 17, 50, 120.99, '08-Jul-2018 12:08:56.236')
 
+insert into logs(eventtype, quantity, price, tickersymbol, timestamp) values('PLACEMENT', '100','1.23','ATH','10-Jul-2018 18:08:56.235')
+
 

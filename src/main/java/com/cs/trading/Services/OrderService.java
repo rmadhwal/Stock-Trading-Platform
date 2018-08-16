@@ -24,6 +24,9 @@ public class OrderService {
     @Autowired
     OrderService os;
 
+    @Autowired
+    LogService logService;
+
     public List<Order> findOrdersBySide(Side side) {
         return or.findOrdersBySide(side);
     }
@@ -34,6 +37,13 @@ public class OrderService {
 
     public List<Order> findOrdersByType(OrderType type) {
         return or.findOrdersByType(type);
+    }
+
+    public List<Order> findOrdersSortedBy(String parameter) {
+        if(parameter.equals("symbol"))
+            return or.findOrdersSortedBySymbol();
+        else
+            return or.findOrdersSortedByPrice();
     }
 
     private void matchOrder(Order orderToBeMatched) {
@@ -107,6 +117,7 @@ public class OrderService {
                     else
                         transactionPrice = sellSideOrder.getPrice();
                     tr.addTransaction(buySideOrder.getId(), sellSideOrder.getId(), transactionQuantity, transactionPrice, new Date());
+                    logService.createNewLog(EventType.FULFILLMENT, buySideOrder.getOwnerId(), sellSideOrder.getOwnerId(), transactionQuantity, transactionPrice, buySideOrder.getOrderType(), sellSideOrder.getOrderType(), buySideOrder.getTickerSymbol(), new Date());
                     updateOrder(buySideOrder);
                     updateOrder(sellSideOrder);
                 }
@@ -114,17 +125,6 @@ public class OrderService {
 
 	public List<Order> listAllOrders() {
         return or.findAll();
-    }
-
-    public List<Order> findOrdersGroupedBy(String parameter){
-        if(parameter.equals("side"))
-            return or.findOrdersGroupedBySide();
-        else if(parameter.equals("type"))
-            return or.findOrdersGroupedByType();
-        else if(parameter.equals("status"))
-            return or.findOrdersGroupedByStatus();
-        else
-            return new ArrayList<Order>();
     }
 
     public Order findOrderById(int id) {
@@ -147,12 +147,16 @@ public class OrderService {
     public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, Integer filledQuantity, Double price, Integer quantity, String tickerSymbol, int traderId) {
         int orderId =  or.placeOrder(orderType, status, side, timestamp, filledQuantity, price, quantity, tickerSymbol, traderId);
         matchOrder(new Order(orderId, orderType, status, side, timestamp, filledQuantity, price, quantity, tickerSymbol, traderId));
+        logService.createNewLog(EventType.PLACEMENT, null, null, quantity, price, null, null, tickerSymbol, timestamp);
         return orderId;
     }
 
     public int cancelOrder(int orderId, int traderId) {
-        if(os.findOrdersByTraderId(traderId).stream().anyMatch(item -> (item.getOwnerId() == traderId && item.getStatus().equals(Status.OPEN))))
+        if(os.findOrdersByTraderId(traderId).stream().anyMatch(item -> (item.getOwnerId() == traderId && item.getStatus().equals(Status.OPEN)))) {
+            Order orderBeingCancelled = os.findOrderById(orderId);
+            logService.createNewLog(EventType.CANCELLATION, null, null, orderBeingCancelled.getQuantity(), orderBeingCancelled.getPrice(), null, null, orderBeingCancelled.getTickerSymbol(), new Date());
             return or.changeOrderStatus(orderId, Status.CANCELLED);
+        }
         return 0;
     }
 

@@ -66,6 +66,11 @@ public class OrderController {
 		return os.findOrdersBySymbol(symbol);
 	}
 
+    @RequestMapping(value="/orders/sorted/{parameter}", method=RequestMethod.GET)
+    public List<Order> returnAllOrdersSortedBy(@PathVariable(value="parameter") String parameter) {
+        return os.findOrdersSortedBy(parameter);
+    }
+
 	@RequestMapping(value="/orders/limit/buy", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
 	public int placeLimitBuyOrder(Principal principal, Double price, Integer quantity, String tickerSymbol) {
 		return os.placeOrder(OrderType.LIMIT, Status.OPEN, Side.BUY, new Date(), 0, price, quantity, tickerSymbol, Integer.parseInt(principal.getName()));
