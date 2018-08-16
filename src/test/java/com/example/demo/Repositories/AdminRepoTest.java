@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +29,7 @@ import com.cs.trading.Repositories.AdminRepository;
 import com.cs.trading.Repositories.OrderRepository;
 import com.cs.trading.Repositories.TraderRepository;
 import com.cs.trading.Services.SectorService;
+import com.cs.trading.Services.TraderService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = UsersDbApplication.class)
@@ -46,6 +46,9 @@ public class AdminRepoTest {
 	
 	@Autowired
 	SectorService sectorService;
+	
+	@Autowired
+	TraderService traderService;
 	
 	private List<User> traderList;
 	private int initialListSize; 
@@ -113,46 +116,46 @@ public class AdminRepoTest {
 		assertEquals(modifiedDate, date);
 	}
 	
-//	@Test
-//	public void findTotalNumberOfOrdersByStatus() {
-//		
-//		HashMap<Status, List<Order>> map = adminRepo.retrieveOrdersByStatus();
-//		
-//		List<Order> openedList = map.get(Status.OPEN);
-//		int[] expectedOpenId = {11,12};
-//		int[] openArr = new int[openedList.size()];
-//		for(int i = 0; i < openedList.size(); i++) {
-//			openArr[i] = openedList.get(i).getId();
-//		}
-//		assertThat(Arrays.asList(expectedOpenId), hasItem(openArr));
-//		
-//		List<Order> fulfilledList = map.get(Status.FULFILLED);
-//		int[] expectedFulfilledId = {13, 14, 16};
-//		int[] fulfillArr = new int[fulfilledList.size()];
-//		for(int i = 0; i < fulfilledList.size(); i++) {
-//			fulfillArr[i] = fulfilledList.get(i).getId();
-//		}
-//		assertThat(Arrays.asList(expectedFulfilledId), hasItem(fulfillArr));
-//		
-//		List<Order> cancelledList = map.get(Status.CANCELLED);
-//		int[] expectedCancelledId = {15};
-//		int[] cancelledArr = new int[cancelledList.size()];
-//		for(int i = 0; i < cancelledList.size(); i++) {
-//			cancelledArr[i] = cancelledList.get(i).getId();
-//		}
-//		assertThat(Arrays.asList(expectedCancelledId), hasItem(cancelledArr));
-//		
-//		int totalNumOfOrders = openedList.size() + fulfilledList.size() + cancelledList.size();
-//		assertEquals(initialOrderSize, totalNumOfOrders);
-//		
-//	}
+	@Test
+	public void findTotalNumberOfOrdersByStatus() {
+		
+		HashMap<Status, List<Order>> map = adminRepo.retrieveOrdersByStatus();
+		
+		List<Order> openedList = map.get(Status.OPEN);
+		int[] expectedOpenId = {11,12, 19, 20};
+		int[] openArr = new int[openedList.size()];
+		for(int i = 0; i < openedList.size(); i++) {
+			openArr[i] = openedList.get(i).getId();
+		}
+		assertThat(Arrays.asList(expectedOpenId), hasItem(openArr));
+		
+		List<Order> fulfilledList = map.get(Status.FULFILLED);
+		int[] expectedFulfilledId = {13, 14, 16, 17};
+		int[] fulfillArr = new int[fulfilledList.size()];
+		for(int i = 0; i < fulfilledList.size(); i++) {
+			fulfillArr[i] = fulfilledList.get(i).getId();
+		}
+		assertThat(Arrays.asList(expectedFulfilledId), hasItem(fulfillArr));
+		
+		List<Order> cancelledList = map.get(Status.CANCELLED);
+		int[] expectedCancelledId = {15, 18};
+		int[] cancelledArr = new int[cancelledList.size()];
+		for(int i = 0; i < cancelledList.size(); i++) {
+			cancelledArr[i] = cancelledList.get(i).getId();
+		}
+		assertThat(Arrays.asList(expectedCancelledId), hasItem(cancelledArr));
+		
+		int totalNumOfOrders = openedList.size() + fulfilledList.size() + cancelledList.size();
+		assertEquals(initialOrderSize, totalNumOfOrders);
+		
+	}
 	
 	@Test
 	public void findTopNTradersByTrades() {
 		final int N = 5; 
 		List<Trader> userList = traderRepo.findTopNTradersByNumber(N);
 		
-		int[] expectedTraderId = {2, 999, 5 , 6, 4};
+		int[] expectedTraderId = {2, 999, 5 , 4, 1};
 		int[] expectedTraderNum = {3, 2, 2, 1, 1};
 		//expected top 5 traders by id: 2, 999, 5, (6,4, or 1)
 		int[] traderId = new int[N];
@@ -161,9 +164,22 @@ public class AdminRepoTest {
 			traderId[i] = userList.get(i).getId();
 			traderNum[i] = userList.get(i).getNumTrades();
 		}
-		
-		assertThat(Arrays.asList(expectedTraderId), hasItem(traderId));
-		assertThat(Arrays.asList(expectedTraderNum), hasItem(traderNum));
+//		assertArrayEquals(expectedTraderId, traderId);
+		assertArrayEquals(expectedTraderNum, traderNum);
+	}
+	
+	@Test
+	public void findTopNTradersByVolume() {
+		List<String> traderList = new ArrayList<>();
+		final int N = 5; 
+		//order: 2, 999, 5, 1 ,4
+		traderList.add("2");
+		traderList.add("999");
+		traderList.add("5");
+		traderList.add("1");
+		traderList.add("4");
+		List<String> list = traderService.findTopNTradersByVolume(N);
+		assertEquals(traderList, list);
 	}
 	
 }

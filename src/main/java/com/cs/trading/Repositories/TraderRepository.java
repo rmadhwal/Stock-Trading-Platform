@@ -5,12 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import com.cs.trading.Models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -18,6 +14,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import com.cs.trading.Models.Role;
+import com.cs.trading.Models.Trader;
+import com.cs.trading.Models.User;
+import com.cs.trading.Services.TransactionService;
 
 @Repository
 public class TraderRepository {
@@ -47,7 +48,7 @@ public class TraderRepository {
     	return keyHolder.getKey().intValue();
 	}
 	
-	public List<User> findAll() {
+	public List<Trader> findAll() {
 		return jdbcTemplate.query("select * from users where role = \'TRADER\'", new UserRowMapper());
 	}
 	
@@ -62,19 +63,11 @@ public class TraderRepository {
 				"on order_count.ownerid = users.id", new TraderByNumTradeRowMapper(), limit);
 	}
 	
-	public List<Trader> findTopNTradersByVolume(int limit){
-//		return jdbcTemplate.query("select * " + 
-//				"from users " + 
-//				"inner join (select ownerid, count(id) as numTrade from orders group by ownerid order by numTrade desc limit ?) as order_count " + 
-//				"on order_count.ownerid = users.id", new TraderByVolumeRowMapper(), limit);
-		return null; 
-	}
-	
-	class UserRowMapper implements RowMapper<User>
+	class UserRowMapper implements RowMapper<Trader>
 	{
 		@Override
-		public User mapRow(ResultSet rs, int rowNum) throws SQLException{
-			User user = new Trader();
+		public Trader mapRow(ResultSet rs, int rowNum) throws SQLException{
+			Trader user = new Trader();
 			user.setId(rs.getInt("id"));
 			user.setEmail(rs.getString("email"));
 			user.setFirstName(rs.getString("firstname"));

@@ -19,7 +19,7 @@ insert into users(id, firstname, lastname, password, phone, email, role) values(
 insert into companies(symbol, name, sectorid) values('COMPANY_WITH_ORDERS','COMPANY_WITH_ORDERS',44)
 insert into companies(symbol, name, sectorid) values('COMPANY_WITHOUT_ORDERS','COMPANY_WITHOUT_ORDERS',44)
 insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (11, 'MARKET','OPEN','BUY','04-Jul-2018 12:08:56.235',50,19.99,100,'COMPANY_WITH_ORDERS',999)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (12, 'MARKET','OPEN','BUY','04-Jul-2018 12:08:56.235',40,19.99,80,'COMPANY_WITH_ORDERS',999)
+insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (12, 'MARKET','OPEN','BUY','04-Jul-2018 12:08:56.235',40,19.99,50,'COMPANY_WITH_ORDERS',999)
 insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (13,'LIMIT','FULFILLED','SELL','05-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',2)
 insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (14,'LIMIT','FULFILLED','SELL','05-Jul-2018 13:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',2)
 insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (15,'LIMIT','CANCELLED','BUY','08-Jul-2018 15:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',2)
@@ -31,21 +31,12 @@ insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quan
 
 insert into companies(symbol, name, sectorid) values('COMPANY_WITH_ORDERS_2','COMPANY_WITHOUT_ORDERS_2',44)
 
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (12, 'MARKET','OPEN','BUY','05-Jul-2018 12:08:56.235',50,19.99,100,'COMPANY_WITH_ORDERS',999)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (13,'LIMIT','OPEN','BUY','04-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',0)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (14,'LIMIT','OPEN','BUY','06-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',0)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (15,'LIMIT','OPEN','BUY','07-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',0)
-
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (16, 'MARKET','OPEN','BUY','05-Jul-2018 12:08:56.235',50,19.99,100,'COMPANY_WITH_ORDERS_2',999)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (17,'LIMIT','OPEN','SELL','04-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2_2',0)
-
-insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (12, 13, 50, 19.99, '04-Jul-2018 12:08:56.236')
-insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (12, 13, 50, 111.99, '05-Jul-2018 12:08:56.236')
+insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (11, 13, 50, 19.99, '04-Jul-2018 12:08:56.236')
+insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (12, 14, 50, 111.99, '05-Jul-2018 12:08:56.236')
 insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (12, 13, 50, 120.99, '06-Jul-2018 12:08:56.236')
 
-insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (16, 17, 50, 111.99, '05-Jul-2018 12:08:56.236')
-insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (16, 17, 50, 120.99, '06-Jul-2018 12:08:56.236')
-insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (16, 17, 50, 111.99, '07-Jul-2018 12:08:56.236')
-insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (16, 17, 50, 120.99, '08-Jul-2018 12:08:56.236')
+insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (15, 17, 50, 111.99, '05-Jul-2018 12:08:56.236')
+insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (16, 18, 50, 120.99, '06-Jul-2018 12:08:56.236')
+insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (19, 20, 50, 111.99, '07-Jul-2018 12:08:56.236')
 
 
