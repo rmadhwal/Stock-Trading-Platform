@@ -71,6 +71,13 @@ public class OrderRepository {
 		return jdbcTemplate.query("select * from orders where tickersymbol=?", new OrderRowMapper(), tickerSymbol);
 	}
 
+	public List<Order> findOrdersBySymbol(String tickerSymbol, Date startTime, Date endTime, String sort) {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
+		return jdbcTemplate.query("select * from orders where tickersymbol=? and (timestamp between ? and ?) order by timestamp ?", new OrderRowMapper(), tickerSymbol, formatter.format(startTime),formatter.format(endTime),sort);
+	}
+
+
 	public int findLatestId() {
 		return jdbcTemplate.queryForObject("select MAX(id) from orders", Integer.class);
 	}
