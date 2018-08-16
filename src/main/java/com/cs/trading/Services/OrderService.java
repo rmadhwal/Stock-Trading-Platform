@@ -112,6 +112,10 @@ public class OrderService {
     public List<Order> findOrdersBySymbol(String tickerSymbol) {
 	    return or.findOrdersBySymbol(tickerSymbol);
     }
+    
+    public List<Order> findOrdersBySymbol(String tickerSymbol, Date startTime, Date endTime, String sort) {
+	    return or.findOrdersBySymbol(tickerSymbol, startTime, endTime, sort);
+    }
 
     public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, Integer filledQuantity, Double price, Integer quantity, String tickerSymbol, int traderId) {
         int orderId =  or.placeOrder(orderType, status, side, timestamp, filledQuantity, price, quantity, tickerSymbol, traderId);

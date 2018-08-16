@@ -34,5 +34,8 @@ public class TransactionService {
     public int createNewTransaction(int buyOrderId, int sellOrderId, int quantity, double price, Date timestamp){
 	    return tr.addTransaction(buyOrderId, sellOrderId, quantity, price, timestamp);
     }
+    public Transaction findLastTransactionBySymbol(String symbol) {
+    	return tr.findLastTransactionBySymbol(symbol);
+    }
 
 }

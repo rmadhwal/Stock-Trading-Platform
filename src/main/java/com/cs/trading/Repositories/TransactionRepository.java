@@ -32,6 +32,22 @@ public class TransactionRepository {
 		String timestampString = formatter.format(timestamp);
 		return jdbcTemplate.update("insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) VALUES (?,?,?,?,?)",buyOrderId, sellOrderId, quantity, price, timestampString);
 	}
+	
+	public Transaction findLastTransactionBySymbol(String symbol) {
+		return jdbcTemplate.queryForObject(
+				
+				"select transactions.id, transactions.buyorderid, transactions.sellorderid, transactions.quantity, transactions.price, transactions.timestamp"
+				+" from (select id as order_id, tickersymbol from ORDERS where tickersymbol=?) t2"
+				+" inner join transactions"
+				+" on transactions.buyorderid =t2.order_id or transactions.sellorderid=t2.order_id" 
+				+" order by transactions.timestamp"
+				+" desc limit 1"
+				,new TransactionRowMapper(),
+				symbol
+			);
+				
+	}
+	
 
 	class TransactionRowMapper implements RowMapper<Transaction>
 	{

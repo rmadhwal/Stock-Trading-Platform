@@ -48,10 +48,16 @@ public class OrderRepository {
 	public List<Order> findOrdersBySymbol(String tickerSymbol) {
 		return jdbcTemplate.query("select * from orders where tickersymbol=?", new OrderRowMapper(), tickerSymbol);
 	}
-
+	
+	public List<Order> findOrdersBySymbol(String tickerSymbol, Date startTime, Date endTime, String sort) {
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
+		return jdbcTemplate.query("select * from orders where tickersymbol=? and (timestamp between ? and ?) order by timestamp ?", new OrderRowMapper(), tickerSymbol, formatter.format(startTime),formatter.format(endTime),sort);
+	}
+	
 	public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, int filledQuantity, Double price, int quantity, String tickerSymbol, int traderId){
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
-		String timestampString = formatter.format(timestamp);
+		
+		String timestampString = Order.formatter.format(timestamp);
 		String orderTypeString = orderType.name();
 		String statusString = status.name();
 		String sideString = side.name();
@@ -134,4 +140,5 @@ public class OrderRepository {
 
 		}
 	}
+	
 }

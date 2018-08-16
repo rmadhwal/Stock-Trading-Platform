@@ -48,7 +48,8 @@ public class CompanyRepository {
 	public List<Company> findCompanyByLetters(String letters){
 		return jdbcTemplate.query("select * from companies where LOWER(symbol) LIKE LOWER('"+letters+"%')", new CompanyRowMapper());
 	}
-
+	
+	
 	
 	public int createCompany(Company company) {
 		

@@ -1,19 +1,26 @@
 package com.cs.trading.Controllers;
 
+import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cs.trading.Models.Order;
 import com.cs.trading.Models.OrderType;
 import com.cs.trading.Models.Side;
 import com.cs.trading.Models.Status;
-import com.cs.trading.Services.OrderService;
 import com.cs.trading.Repositories.OrderRepository;
-import com.cs.trading.Services.TraderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.Date;
-import java.util.List;
+import com.cs.trading.Services.OrderService;
 
 @RestController
 public class OrderController {
@@ -73,6 +80,26 @@ public class OrderController {
 	public int updateOrder(Principal principal, int orderId, @RequestParam(value = "orderType", required = false) OrderType orderType, @RequestParam(value = "price", required = false) Double price, @RequestParam(value = "quantity", required = false) Integer quantity) {
 		return os.updateOrder(orderId, orderType, price, quantity, Integer.parseInt(principal.getName()));
 	}
+	
+	@RequestMapping(value = "/quotes/{symbol}", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.GET)
+	public Object getQuote(@PathVariable(value="symbol") String symbol ,@RequestParam(value="start") String start, @RequestParam(value="end") String end, @RequestParam(value="sort", required = false) String sort){
+		
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy/HH:mm:ss.SSS");
+		List<Order> orders;
+		
+		
+		String _sort = (sort.equalsIgnoreCase("DESC"))? "DESC": "ASC";
+		try {
+			orders = os.findOrdersBySymbol(symbol, formatter.parse(start), formatter.parse(end),_sort);
+			return orders;
+		} catch (ParseException e) {
+
+			System.out.println(e.getMessage());
+			return "Please pass the date format dd/MM/yyyy/HH:mm:ss.SSS";
+		}
+	}
+	
 }
 
 
