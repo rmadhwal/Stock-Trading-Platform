@@ -27,6 +27,10 @@ public class OrderService {
     private List<Order> findOrdersBySide(Side side) {
         return or.findOrdersBySide(side);
     }
+    
+    public List<Order> findOrdersByStatus(Status status) {
+	    return or.findOrdersByStatus(status);
+    }
 
     private void matchOrder(Order orderToBeMatched) {
         LinkedList<Order> potentialMatchingOrders = new LinkedList<Order>();

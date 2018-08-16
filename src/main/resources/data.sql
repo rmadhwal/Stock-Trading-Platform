@@ -16,8 +16,11 @@ insert into users(id, firstname, lastname, password, phone, email, role) values(
 insert into companies(symbol, name, sectorid) values('COMPANY_WITH_ORDERS','COMPANY_WITH_ORDERS',44)
 insert into companies(symbol, name, sectorid) values('COMPANY_WITHOUT_ORDERS','COMPANY_WITHOUT_ORDERS',44)
 insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (11, 'MARKET','OPEN','BUY','04-Jul-2018 12:08:56.235',50,19.99,100,'COMPANY_WITH_ORDERS',999)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (12, 'MARKET','OPEN','BUY','10-Jul-2018 12:08:56.235',40,19.99,80,'COMPANY_WITH_ORDERS',999)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (13,'LIMIT','FULFILLED','SELL','04-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',0)
+insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (12, 'MARKET','OPEN','BUY','04-Jul-2018 12:08:56.235',40,19.99,80,'COMPANY_WITH_ORDERS',999)
+insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (13,'LIMIT','FULFILLED','SELL','05-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',2)
+insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (14,'LIMIT','FULFILLED','SELL','05-Jul-2018 13:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',1)
+insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (15,'LIMIT','CANCELLED','SELL','08-Jul-2018 15:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',0)
+insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (16,'LIMIT','FULFILLED','SELL','09-Jul-2018 18:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',0)
 insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (12, 13, 50, 19.99, '04-Jul-2018 12:08:56.236')
 
 

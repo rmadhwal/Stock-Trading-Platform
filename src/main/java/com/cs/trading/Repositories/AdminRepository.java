@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cs.trading.Models.Order;
 import com.cs.trading.Models.Role;
+import com.cs.trading.Models.Status;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 import com.cs.trading.Services.CompanyService;
@@ -61,6 +63,15 @@ public class AdminRepository {
 			List<Order> orderList = orderService.findOrdersByTraderId(traderId);
 			Collections.sort(orderList);
 			return orderList.get(0).getTimeStamp(); 
+		}
+		
+		public HashMap<Status, List<Order>> retrieveOrdersByStatus() {
+			HashMap<Status, List<Order>> map = new HashMap<>();
+			//three different status 
+			map.put(Status.OPEN, orderService.findOrdersByStatus(Status.OPEN));
+			map.put(Status.CANCELLED, orderService.findOrdersByStatus(Status.CANCELLED));
+			map.put(Status.FULFILLED, orderService.findOrdersByStatus(Status.FULFILLED));
+			return map; 
 		}
 		
 		class UserRowMapper implements RowMapper<User>

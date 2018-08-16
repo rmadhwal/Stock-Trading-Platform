@@ -1,8 +1,17 @@
 package com.example.demo.Repositories;
 
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Before;
@@ -13,6 +22,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cs.trading.UsersDbApplication;
+import com.cs.trading.Models.Order;
+import com.cs.trading.Models.Status;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 import com.cs.trading.Repositories.AdminRepository;
@@ -38,11 +49,16 @@ public class AdminRepoTest {
 	
 	private List<User> traderList;
 	private int initialListSize; 
+	private List<Order> orderList; 
+	private int initialOrderSize; 
+	
 	
 	@Before
 	public void init() {
 		traderList = adminRepo.listAllTraders();
 		initialListSize = traderList.size(); 
+		orderList = orderRepo.findAll();
+		initialOrderSize = orderList.size(); 
 	}
 	
 	@Test
@@ -85,9 +101,52 @@ public class AdminRepoTest {
 	public void findLatestTimeFromTraderIdThenSuccess() {
 		//delete trader with id 5 with no existing orders
 		int traderId = 999; 
+		String givenDate = "04-Jul-2018 12:08:56.235";
 		Date date = adminRepo.retrieveLatestTimeTraderLastOrder(traderId);
-		assertEquals("10-Jul-2018 12:08:56.235", date.toString());
+		Date modifiedDate = new Date(); 
+		 try {
+			modifiedDate =new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS").parse(givenDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		assertEquals(modifiedDate, date);
 	}
+	
+	@Test
+	public void findTotalNumberOfOrdersByStatus() {
+		
+		HashMap<Status, List<Order>> map = adminRepo.retrieveOrdersByStatus();
+		
+		List<Order> openedList = map.get(Status.OPEN);
+		int[] expectedOpenId = {11,12};
+		int[] openArr = new int[openedList.size()];
+		for(int i = 0; i < openedList.size(); i++) {
+			openArr[i] = openedList.get(i).getId();
+		}
+		assertThat(Arrays.asList(expectedOpenId), hasItem(openArr));
+		
+		List<Order> fulfilledList = map.get(Status.FULFILLED);
+		int[] expectedFulfilledId = {13, 14, 16};
+		int[] fulfillArr = new int[fulfilledList.size()];
+		for(int i = 0; i < fulfilledList.size(); i++) {
+			fulfillArr[i] = fulfilledList.get(i).getId();
+		}
+		assertThat(Arrays.asList(expectedFulfilledId), hasItem(fulfillArr));
+		
+		List<Order> cancelledList = map.get(Status.CANCELLED);
+		int[] expectedCancelledId = {15};
+		int[] cancelledArr = new int[cancelledList.size()];
+		for(int i = 0; i < cancelledList.size(); i++) {
+			cancelledArr[i] = cancelledList.get(i).getId();
+		}
+		assertThat(Arrays.asList(expectedCancelledId), hasItem(cancelledArr));
+		
+		int totalNumOfOrders = openedList.size() + fulfilledList.size() + cancelledList.size();
+		assertEquals(initialOrderSize, totalNumOfOrders);
+		
+	}
+	
 	
 }
 
