@@ -38,15 +38,15 @@ public class AdminRepository {
 		
 		
 		public List<User> listAllTraders(){
-			return jdbcTemplate.query("select * from users", new UserRowMapper());
+			return jdbcTemplate.query("select * from users where role = \'TRADER\'", new UserRowMapper());
 		}
 		
 		public int findLatestId() {
-			return jdbcTemplate.queryForObject("select MAX(id) from users", Integer.class);
+			return jdbcTemplate.queryForObject("select MAX(id) from users where role = \'TRADER\'", Integer.class);
 		}
 		
 		public List<User> getTrader(int id){
-			return jdbcTemplate.query("SELECT * FROM USERS where id =" + id, new UserRowMapper());
+			return jdbcTemplate.query("SELECT * FROM USERS where role = \'TRADER\' and id =" + id, new UserRowMapper());
 		}
 		
 		public int deleteExistingTrader(int traderId) {
@@ -56,7 +56,7 @@ public class AdminRepository {
 				//do not delete trader if there is existing order
 				return 2; 
 			}
-				return jdbcTemplate.update("DELETE FROM users WHERE id = ?", traderId);
+				return jdbcTemplate.update("DELETE FROM users WHERE role = \'TRADER\' and id = ?", traderId);
 		}
 		
 		public Date retrieveLatestTimeTraderLastOrder(int traderId) {

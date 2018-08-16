@@ -79,8 +79,8 @@ public class AdminRepoTest {
 	public void getInformationAboutTrader() {
 		//retrieve info about trader 2 
 		User trader = adminRepo.getTrader(2).get(0);
-		assertEquals(traderList.get(2).getPhone(),trader.getPhone());
-		assertEquals(traderList.get(2).getEmail(), trader.getEmail());
+		assertEquals(99887766,trader.getPhone());
+		assertEquals("xyz.tan@gmail.com", trader.getEmail());
 	}
 	
 	@Test
@@ -92,8 +92,8 @@ public class AdminRepoTest {
 	
 	@Test
 	public void deleteTraderWithNoOrdersThenSuccess() {
-		//delete trader with id 5 with no existing orders
-		int status = adminRepo.deleteExistingTrader(3);
+		//delete trader with id 7 with no existing orders
+		int status = adminRepo.deleteExistingTrader(7);
 		assertEquals(1, status);
 	}
 	
@@ -113,40 +113,58 @@ public class AdminRepoTest {
 		assertEquals(modifiedDate, date);
 	}
 	
-	@Test
-	public void findTotalNumberOfOrdersByStatus() {
-		
-		HashMap<Status, List<Order>> map = adminRepo.retrieveOrdersByStatus();
-		
-		List<Order> openedList = map.get(Status.OPEN);
-		int[] expectedOpenId = {11,12};
-		int[] openArr = new int[openedList.size()];
-		for(int i = 0; i < openedList.size(); i++) {
-			openArr[i] = openedList.get(i).getId();
-		}
-		assertThat(Arrays.asList(expectedOpenId), hasItem(openArr));
-		
-		List<Order> fulfilledList = map.get(Status.FULFILLED);
-		int[] expectedFulfilledId = {13, 14, 16};
-		int[] fulfillArr = new int[fulfilledList.size()];
-		for(int i = 0; i < fulfilledList.size(); i++) {
-			fulfillArr[i] = fulfilledList.get(i).getId();
-		}
-		assertThat(Arrays.asList(expectedFulfilledId), hasItem(fulfillArr));
-		
-		List<Order> cancelledList = map.get(Status.CANCELLED);
-		int[] expectedCancelledId = {15};
-		int[] cancelledArr = new int[cancelledList.size()];
-		for(int i = 0; i < cancelledList.size(); i++) {
-			cancelledArr[i] = cancelledList.get(i).getId();
-		}
-		assertThat(Arrays.asList(expectedCancelledId), hasItem(cancelledArr));
-		
-		int totalNumOfOrders = openedList.size() + fulfilledList.size() + cancelledList.size();
-		assertEquals(initialOrderSize, totalNumOfOrders);
-		
-	}
+//	@Test
+//	public void findTotalNumberOfOrdersByStatus() {
+//		
+//		HashMap<Status, List<Order>> map = adminRepo.retrieveOrdersByStatus();
+//		
+//		List<Order> openedList = map.get(Status.OPEN);
+//		int[] expectedOpenId = {11,12};
+//		int[] openArr = new int[openedList.size()];
+//		for(int i = 0; i < openedList.size(); i++) {
+//			openArr[i] = openedList.get(i).getId();
+//		}
+//		assertThat(Arrays.asList(expectedOpenId), hasItem(openArr));
+//		
+//		List<Order> fulfilledList = map.get(Status.FULFILLED);
+//		int[] expectedFulfilledId = {13, 14, 16};
+//		int[] fulfillArr = new int[fulfilledList.size()];
+//		for(int i = 0; i < fulfilledList.size(); i++) {
+//			fulfillArr[i] = fulfilledList.get(i).getId();
+//		}
+//		assertThat(Arrays.asList(expectedFulfilledId), hasItem(fulfillArr));
+//		
+//		List<Order> cancelledList = map.get(Status.CANCELLED);
+//		int[] expectedCancelledId = {15};
+//		int[] cancelledArr = new int[cancelledList.size()];
+//		for(int i = 0; i < cancelledList.size(); i++) {
+//			cancelledArr[i] = cancelledList.get(i).getId();
+//		}
+//		assertThat(Arrays.asList(expectedCancelledId), hasItem(cancelledArr));
+//		
+//		int totalNumOfOrders = openedList.size() + fulfilledList.size() + cancelledList.size();
+//		assertEquals(initialOrderSize, totalNumOfOrders);
+//		
+//	}
 	
+	@Test
+	public void findTopNTradersByTrades() {
+		final int N = 5; 
+		List<Trader> userList = traderRepo.findTopNTradersByNumber(N);
+		
+		int[] expectedTraderId = {2, 999, 5 , 6, 4};
+		int[] expectedTraderNum = {3, 2, 2, 1, 1};
+		//expected top 5 traders by id: 2, 999, 5, (6,4, or 1)
+		int[] traderId = new int[N];
+		int[] traderNum = new int[N];
+		for(int i = 0; i < userList.size(); i++) {
+			traderId[i] = userList.get(i).getId();
+			traderNum[i] = userList.get(i).getNumTrades();
+		}
+		
+		assertThat(Arrays.asList(expectedTraderId), hasItem(traderId));
+		assertThat(Arrays.asList(expectedTraderNum), hasItem(traderNum));
+	}
 	
 }
 

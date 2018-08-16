@@ -16,6 +16,7 @@ import com.cs.trading.Models.Status;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 import com.cs.trading.Repositories.AdminRepository;
+import com.cs.trading.Repositories.TraderRepository;
 import com.cs.trading.Services.AdminService;
 
 @RestController
@@ -26,6 +27,9 @@ public class TraderController {
 	
 	@Autowired
 	AdminService as; 
+	
+	@Autowired
+	TraderRepository tr; 
 	
 	
 	@RequestMapping(value="/traders", method=RequestMethod.GET)
@@ -57,6 +61,11 @@ public class TraderController {
 	@RequestMapping("/traders/listOrdersByStatus")
 	public HashMap<Status, List<Order>> listTotalNumerOfOrdersByStatus() {
 		return ar.retrieveOrdersByStatus();
+	}
+	
+	@RequestMapping("/traders/topNTradersByNum/{limit}")
+	public List<Trader> listTopNTradersByNum(@PathVariable(value="limit") int limit) {
+		return tr.findTopNTradersByNumber(limit);
 	}
 }
 
