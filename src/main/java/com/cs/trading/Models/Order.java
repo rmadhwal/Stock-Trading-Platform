@@ -1,5 +1,6 @@
 package com.cs.trading.Models;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Order implements Comparable<Order>{
@@ -15,6 +16,8 @@ public class Order implements Comparable<Order>{
 	private String tickerSymbol;
 	private int ownerId;
 
+	public static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
+	
 	public Order() {
 		// TODO Auto-generated constructor stub
 	}

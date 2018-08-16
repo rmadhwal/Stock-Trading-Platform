@@ -18,6 +18,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/users").hasRole("USER")
 		.antMatchers("/traders/*").hasRole("ADMIN")
 		.anyRequest().permitAll()
+				.antMatchers("/orders").hasRole("USER")
+				.anyRequest().permitAll()
 		.and()
 		.httpBasic()
 		.and()

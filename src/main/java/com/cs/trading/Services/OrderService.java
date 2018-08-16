@@ -24,12 +24,16 @@ public class OrderService {
     @Autowired
     OrderService os;
 
-    private List<Order> findOrdersBySide(Side side) {
+    public List<Order> findOrdersBySide(Side side) {
         return or.findOrdersBySide(side);
     }
     
     public List<Order> findOrdersByStatus(Status status) {
 	    return or.findOrdersByStatus(status);
+    }
+
+    public List<Order> findOrdersByType(OrderType type) {
+        return or.findOrdersByType(type);
     }
 
     private void matchOrder(Order orderToBeMatched) {
@@ -84,11 +88,18 @@ public class OrderService {
                         buySideOrder.setStatus(Status.FULFILLED);
                         sellSideOrder.setFilledQuantity(sellSideOrder.getFilledQuantity()+transactionQuantity);
                     }
+                    else if(buySideOrder.getQuantity() - buySideOrder.getFilledQuantity() > sellSideOrder.getQuantity() - sellSideOrder. getFilledQuantity()) {
+                        transactionQuantity = sellSideOrder.getQuantity() - sellSideOrder. getFilledQuantity();
+                        sellSideOrder.setFilledQuantity(sellSideOrder.getQuantity());
+                        sellSideOrder.setStatus(Status.FULFILLED);
+                        buySideOrder.setFilledQuantity(buySideOrder.getFilledQuantity()+transactionQuantity);
+                    }
                     else {
                         transactionQuantity = sellSideOrder.getQuantity() - sellSideOrder. getFilledQuantity();
                         sellSideOrder.setFilledQuantity(sellSideOrder.getQuantity());
                         sellSideOrder.setStatus(Status.FULFILLED);
                         buySideOrder.setFilledQuantity(buySideOrder.getFilledQuantity()+transactionQuantity);
+                        buySideOrder.setStatus(Status.FULFILLED);
                     }
                     double transactionPrice;
                     if(sellSideOrder.getOrderType().equals(OrderType.MARKET))
@@ -105,9 +116,21 @@ public class OrderService {
         return or.findAll();
     }
 
+    public List<Order> findOrdersGroupedBy(String parameter){
+        if(parameter.equals("side"))
+            return or.findOrdersGroupedBySide();
+        else if(parameter.equals("type"))
+            return or.findOrdersGroupedByType();
+        else if(parameter.equals("status"))
+            return or.findOrdersGroupedByStatus();
+        else
+            return new ArrayList<Order>();
+    }
+
     public Order findOrderById(int id) {
 	    return or.findOrderById(id);
     }
+
 
     public List<Order> findOrdersByTraderId(int traderId) {
 	    return or.findOrdersByTraderId(traderId);
@@ -115,6 +138,10 @@ public class OrderService {
 
     public List<Order> findOrdersBySymbol(String tickerSymbol) {
 	    return or.findOrdersBySymbol(tickerSymbol);
+    }
+    
+    public List<Order> findOrdersBySymbol(String tickerSymbol, Date startTime, Date endTime, String sort) {
+	    return or.findOrdersBySymbol(tickerSymbol, startTime, endTime, sort);
     }
 
     public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, Integer filledQuantity, Double price, Integer quantity, String tickerSymbol, int traderId) {
@@ -136,9 +163,10 @@ public class OrderService {
     public int updateOrder(int orderId, OrderType orderType, Double price, Integer quantity, int traderId) {
         if(orderType == null && price == null && quantity == null)
             return 0;
-        Stream<Order> ordersStream = os.findOrdersByTraderId(traderId).stream();
-        if(ordersStream.anyMatch(item -> (item.getId() == orderId && item.getOwnerId() == traderId && item.getStatus().equals(Status.OPEN) && (quantity == null || quantity >= item.getFilledQuantity())))) {
-            return or.updateOrder(orderId, orderType, price, quantity);
+        if(os.findOrdersByTraderId(traderId).stream().anyMatch(item -> (item.getId() == orderId && item.getOwnerId() == traderId && item.getStatus().equals(Status.OPEN) && (quantity == null || quantity >= item.getFilledQuantity())))) {
+            or.updateOrder(orderId, orderType, price, quantity);
+            matchOrder(findOrderById(orderId));
+            return orderId;
         }
         else {
             return 0;

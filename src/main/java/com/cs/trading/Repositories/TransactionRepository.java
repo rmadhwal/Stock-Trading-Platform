@@ -22,16 +22,42 @@ public class TransactionRepository {
 	public List<Transaction> findAll() {
 		return jdbcTemplate.query("select * from transactions", new TransactionRowMapper());
 	}
-	
+
 	public Transaction findTransactionById(int id) {
 		return jdbcTemplate.queryForObject("select * from transactions where id=?", new TransactionRowMapper(), id);
 	}
+
+	public int findLatestId() {
+		return jdbcTemplate.queryForObject("select MAX(id) from transactions", Integer.class);
+	}
+
 
 	public int addTransaction(int buyOrderId, int sellOrderId, int quantity, double price, Date timestamp){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
 		String timestampString = formatter.format(timestamp);
 		return jdbcTemplate.update("insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) VALUES (?,?,?,?,?)",buyOrderId, sellOrderId, quantity, price, timestampString);
 	}
+	
+	public Transaction findLastTransactionBySymbol(String symbol) {
+		try {
+			return jdbcTemplate.queryForObject(
+				
+				"select transactions.id, transactions.buyorderid, transactions.sellorderid, transactions.quantity, transactions.price, transactions.timestamp"
+				+" from (select id as order_id, tickersymbol from ORDERS where tickersymbol=?) t2"
+				+" inner join transactions"
+				+" on transactions.buyorderid =t2.order_id or transactions.sellorderid=t2.order_id" 
+				+" order by transactions.timestamp"
+				+" desc limit 1"
+				,new TransactionRowMapper(),
+				symbol
+			);
+		}catch(org.springframework.dao.EmptyResultDataAccessException ex) {
+			
+		}
+		return null;
+				
+	}
+	
 
 	class TransactionRowMapper implements RowMapper<Transaction>
 	{

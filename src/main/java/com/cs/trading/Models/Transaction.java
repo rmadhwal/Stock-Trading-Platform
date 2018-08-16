@@ -1,13 +1,16 @@
 package com.cs.trading.Models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Transaction {
-    private int id;
-    private int buyOrderId;
-    private int sellOrderId;
-    private int quantityTraded;
-    private double price;
+    private Integer id;
+    private Integer buyOrderId;
+    private Integer sellOrderId;
+    private Integer quantityTraded;
+    private Double price;
     private Date timestamp;
 
     public Transaction() {
@@ -22,43 +25,43 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getBuyOrderId() {
+    public Integer getBuyOrderId() {
         return buyOrderId;
     }
 
-    public void setBuyOrderId(int buyOrderId) {
+    public void setBuyOrderId(Integer buyOrderId) {
         this.buyOrderId = buyOrderId;
     }
 
-    public int getSellOrderId() {
+    public Integer getSellOrderId() {
         return sellOrderId;
     }
 
-    public void setSellOrderId(int sellOrderId) {
+    public void setSellOrderId(Integer sellOrderId) {
         this.sellOrderId = sellOrderId;
     }
 
-    public int getQuantityTraded() {
+    public Integer getQuantityTraded() {
         return quantityTraded;
     }
 
-    public void setQuantityTraded(int quantityTraded) {
+    public void setQuantityTraded(Integer quantityTraded) {
         this.quantityTraded = quantityTraded;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

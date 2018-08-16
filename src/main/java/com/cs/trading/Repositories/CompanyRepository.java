@@ -48,7 +48,9 @@ public class CompanyRepository {
 	public List<Company> findCompanyByLetters(String letters){
 		return jdbcTemplate.query("select * from companies where LOWER(symbol) LIKE LOWER('"+letters+"%')", new CompanyRowMapper());
 	}
-
+	
+	
+	
 	public int createCompany(Company company) {
 		
 		List<Sector> sectors = sectorService.findAll();
@@ -69,15 +71,19 @@ public class CompanyRepository {
 		return -2;
 		
 	}
-
-	public int deleteCompany(Company company) {
-		
-		List<Order> orders = orderService.findOrdersBySymbol(company.getSymbol());
+	public int deleteCompanyBySymbol(String symbol) {
+		List<Order> orders = orderService.findOrdersBySymbol(symbol);
 		if(orders.isEmpty()) {
-			return jdbcTemplate.update("DELETE FROM companies WHERE symbol=?",company.getSymbol());
+			return jdbcTemplate.update("DELETE FROM companies WHERE symbol=?",symbol);
 		}else {
 			return 0;
 		}
+	}
+	
+	
+	public int deleteCompany(Company company) {
+		
+		return deleteCompanyBySymbol(company.getSymbol());
 	}
 	
 	class CompanyRowMapper implements RowMapper<Company>

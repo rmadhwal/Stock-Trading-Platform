@@ -21,22 +21,29 @@ public class TransactionController {
 
 	@Autowired
 	TransactionService ts;
-	
+
 	@RequestMapping(value="/transactions", method=RequestMethod.GET)
 	public List<Transaction> returnAllTransactions() {
 		return ts.listAllTransactions();
 	}
-	
-/*	@RequestMapping("/orders/{id}")
-	public Transaction findTransactionById(@PathVariable(value="id") int id) {
-		return or.findTransactionById(id);
+
+	@RequestMapping(value="/transactions/symbol/{symbol}", method=RequestMethod.GET)
+	public List<Transaction> returnTransactionsBySymbol(@PathVariable(value="symbol") String symbol) {
+		return ts.listAllTransactionsBySymbol(symbol);
 	}
 
 
-	@RequestMapping(value="/placeLimitBuyTransaction", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
-	public int placeLimitBuyTransaction(Principal principal, double price, int quantity, String tickerSymbol) {
-		return os.placeTransaction(TransactionType.LIMIT, Status.OPEN, Side.BUY, new Date(), 0, price, quantity, tickerSymbol, Integer.parseInt(principal.getName()));
-	}*/
+	@RequestMapping(value="/transactions/traderid/{id}", method=RequestMethod.GET)
+	public List<Transaction> returnAllTransactionsByTraderId(@PathVariable(value="id") int id) {
+		return ts.listAllTransactionsByTraderId(id);
+	}
 
+	@RequestMapping(value="/transactions/symbol", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
+	public List<Transaction> findTransactionBySymbolWithFilters(String symbol, @RequestParam(value = "filter", required = false) String filter) {
+		if(filter == null)
+			return ts.listAllTransactionsBySymbol(symbol);
+		else
+			return ts.listAllTransactionsBySymbolWithFilters(symbol, filter);
+	}
 }
 
