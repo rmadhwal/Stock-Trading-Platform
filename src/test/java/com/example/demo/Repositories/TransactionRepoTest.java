@@ -1,6 +1,6 @@
 package com.example.demo.Repositories;
 
-<<<<<<< HEAD
+
 import com.cs.trading.Models.*;
 import com.cs.trading.Repositories.AdminRepository;
 import com.cs.trading.Repositories.OrderRepository;
@@ -9,12 +9,11 @@ import com.cs.trading.Repositories.TransactionRepository;
 import com.cs.trading.Services.SectorService;
 import com.cs.trading.UsersDbApplication;
 import org.junit.Before;
-=======
+
 import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 
 
->>>>>>> origin/master
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +54,10 @@ public class TransactionRepoTest {
 		assertEquals(initialTransactionsSize + 1, transactionsList.size());
 	}
 
-    @Test
+    /*@Test
     public void whenQueryTransactionWhoseCompanyDoesntExistShouldFail() {
         Transaction transaction = ts.findLastTransactionBySymbol("sdfsdfsdf");
-    }
+    }*/
 }
 
 

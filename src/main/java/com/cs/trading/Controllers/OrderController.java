@@ -88,7 +88,7 @@ public class OrderController {
 
 	@RequestMapping(value="/orders/cancel/{id}", produces={MediaType.APPLICATION_JSON_VALUE})
 	public int deleteOrder(Principal principal, @PathVariable(value="id") int id) {
-		return os.deleteOrder(id, Integer.parseInt(principal.getName()));
+		return os.cancelOrder(id, Integer.parseInt(principal.getName()));
 	}
 
 	@RequestMapping(value="/orders/update", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
