@@ -69,6 +69,14 @@ public class TransactionServiceTest {
         int currentATHTransactionsSize = transactionService.listAllTransactionsBySymbol("ATH").size();
         assertEquals(oldATHTransactionsSize + 1, currentATHTransactionsSize);
     }
+
+    @Test
+    public void listAllExistingTransactionsByTraderIdWorks() {
+        int oldTrader0TransactionsSize = transactionService.listAllTransactionsByTraderId(0).size();
+        transactionService.createNewTransaction(orderService.placeOrder(OrderType.LIMIT, Status.FULFILLED, Side.BUY, new Date(), 0, 1.23, 100, "ATH", 0),orderService.placeOrder(OrderType.LIMIT, Status.FULFILLED, Side.SELL, new Date(), 0, 1.23, 100, "ATH", 1),100,1.23,new Date());
+        int currentTrader1TransactionsSize = transactionService.listAllTransactionsByTraderId(0).size();
+        assertEquals(oldTrader0TransactionsSize + 1, currentTrader1TransactionsSize);
+    }
 }
 
 
