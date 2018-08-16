@@ -22,10 +22,12 @@ public class TransactionRepository {
 	public List<Transaction> findAll() {
 		return jdbcTemplate.query("select * from transactions", new TransactionRowMapper());
 	}
+
 	
 	public Transaction findTransactionById(int id) {
 		return jdbcTemplate.queryForObject("select * from transactions where id=?", new TransactionRowMapper(), id);
 	}
+
 
 	public int addTransaction(int buyOrderId, int sellOrderId, int quantity, double price, Date timestamp){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
@@ -34,7 +36,8 @@ public class TransactionRepository {
 	}
 	
 	public Transaction findLastTransactionBySymbol(String symbol) {
-		return jdbcTemplate.queryForObject(
+		try {
+			return jdbcTemplate.queryForObject(
 				
 				"select transactions.id, transactions.buyorderid, transactions.sellorderid, transactions.quantity, transactions.price, transactions.timestamp"
 				+" from (select id as order_id, tickersymbol from ORDERS where tickersymbol=?) t2"
@@ -45,6 +48,10 @@ public class TransactionRepository {
 				,new TransactionRowMapper(),
 				symbol
 			);
+		}catch(org.springframework.dao.EmptyResultDataAccessException ex) {
+			
+		}
+		return null;
 				
 	}
 	

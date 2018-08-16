@@ -53,7 +53,7 @@ public class CompanyController {
 	}
 	@RequestMapping(value = "/companies/create_company", consumes = {MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
 	public Object createCompany(@RequestBody Company company) {
-		System.out.println(company.toString());
+		
 			int res = cs.createCompany(company);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", res);

@@ -3,7 +3,7 @@ package com.cs.trading.Models;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Order {
+public class Order implements Comparable<Order>{
 
 	private int id;
 	private OrderType orderType;
@@ -115,6 +115,15 @@ public class Order {
 
 	public void setOwnerId(int ownerId) {
 		this.ownerId = ownerId;
+	}
+
+	@Override
+	public int compareTo(Order o) {
+		// TODO Auto-generated method stub
+		if (this.timeStamp == null || o.getTimeStamp() == null) {
+		      return 0;
+		}
+		return o.getTimeStamp().compareTo(this.timeStamp);
 	}
 
 }

@@ -37,6 +37,19 @@ public class OrderRepository {
 		return jdbcTemplate.queryForObject("select * from orders where id=?", new OrderRowMapper(), id);
 	}
 
+	public List<Order> findOrdersGroupedBySide() {
+		return jdbcTemplate.query("select * from orders group by side", new OrderRowMapper());
+	}
+
+	public List<Order> findOrdersGroupedByType() {
+		return jdbcTemplate.query("select * from orders group by type", new OrderRowMapper());
+	}
+
+	public List<Order> findOrdersGroupedByStatus() {
+		return jdbcTemplate.query("select * from orders group by status", new OrderRowMapper());
+	}
+
+
 	public List<Order> findOrdersByTraderId(int traderId) {
 		return jdbcTemplate.query("select * from orders where ownerid=?", new OrderRowMapper(), traderId);
 	}
@@ -44,6 +57,15 @@ public class OrderRepository {
 	public List<Order> findOrdersBySide(Side side) {
 		return jdbcTemplate.query("select * from orders where side=?", new OrderRowMapper(), side.name());
 	}
+
+	public List<Order> findOrdersByStatus(Status status){
+		return jdbcTemplate.query("select * from orders where status=?", new OrderRowMapper(), status.name());
+	}
+
+	public List<Order> findOrdersByType(OrderType type) {
+		return jdbcTemplate.query("select * from orders where ordertype=?", new OrderRowMapper(), type.name());
+	}
+
 
 	public List<Order> findOrdersBySymbol(String tickerSymbol) {
 		return jdbcTemplate.query("select * from orders where tickersymbol=?", new OrderRowMapper(), tickerSymbol);
