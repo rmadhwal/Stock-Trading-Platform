@@ -150,7 +150,7 @@ public class OrderService {
         return orderId;
     }
 
-    public int deleteOrder(int orderId, int traderId) {
+    public int cancelOrder(int orderId, int traderId) {
         if(os.findOrdersByTraderId(traderId).stream().anyMatch(item -> (item.getOwnerId() == traderId && item.getStatus().equals(Status.OPEN))))
             return or.changeOrderStatus(orderId, Status.CANCELLED);
         return 0;
@@ -164,9 +164,9 @@ public class OrderService {
         if(orderType == null && price == null && quantity == null)
             return 0;
         if(os.findOrdersByTraderId(traderId).stream().anyMatch(item -> (item.getId() == orderId && item.getOwnerId() == traderId && item.getStatus().equals(Status.OPEN) && (quantity == null || quantity >= item.getFilledQuantity())))) {
-            or.updateOrder(orderId, orderType, price, quantity);
+            int returnVal = or.updateOrder(orderId, orderType, price, quantity);
             matchOrder(findOrderById(orderId));
-            return orderId;
+            return returnVal;
         }
         else {
             return 0;

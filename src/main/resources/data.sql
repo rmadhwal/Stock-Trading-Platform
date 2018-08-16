@@ -33,6 +33,8 @@ insert into companies(symbol, name, sectorid) values('COMPANY_WITH_ORDERS_2','CO
 
 insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (11, 13, 50, 19.99, '04-Jul-2018 12:08:56.236')
 insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (12, 14, 50, 111.99, '05-Jul-2018 12:08:56.236')
+
+insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (12, 13, 50, 19.99, '04-Jul-2018 12:08:56.236')
 insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (12, 13, 50, 120.99, '06-Jul-2018 12:08:56.236')
 
 insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (15, 17, 50, 111.99, '05-Jul-2018 12:08:56.236')

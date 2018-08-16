@@ -1,11 +1,20 @@
 package com.example.demo.Repositories;
 
+import com.cs.trading.Models.*;
+import com.cs.trading.Repositories.AdminRepository;
+import com.cs.trading.Repositories.OrderRepository;
+import com.cs.trading.Repositories.TraderRepository;
+import com.cs.trading.Repositories.TransactionRepository;
+import com.cs.trading.Services.SectorService;
+import com.cs.trading.UsersDbApplication;
+import org.junit.Before;
+
+import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +58,10 @@ public class TransactionRepoTest {
 		assertEquals(initialTransactionsSize + 1, transactionsList.size());
 	}
 
-    @Test
+    /*@Test
     public void whenQueryTransactionWhoseCompanyDoesntExistShouldFail() {
         Transaction transaction = ts.findLastTransactionBySymbol("sdfsdfsdf");
-    }
+    }*/
 }
 
 
