@@ -57,6 +57,10 @@ public class OrderRepository {
 	public List<Order> findOrdersBySide(Side side) {
 		return jdbcTemplate.query("select * from orders where side=?", new OrderRowMapper(), side.name());
 	}
+	
+	public List<Order> findOrdersByStatus(Status status){
+		return jdbcTemplate.query("select * from orders where status=?", new OrderRowMapper(), status.name());
+	}
 
 	public List<Order> findOrdersByType(OrderType type) {
 		return jdbcTemplate.query("select * from orders where ordertype=?", new OrderRowMapper(), type.name());

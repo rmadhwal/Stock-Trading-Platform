@@ -27,6 +27,10 @@ public class OrderService {
     public List<Order> findOrdersBySide(Side side) {
         return or.findOrdersBySide(side);
     }
+    
+    public List<Order> findOrdersByStatus(Status status) {
+	    return or.findOrdersByStatus(status);
+    }
 
     public List<Order> findOrdersByType(OrderType type) {
         return or.findOrdersByType(type);
