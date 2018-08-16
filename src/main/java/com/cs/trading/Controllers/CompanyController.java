@@ -51,7 +51,7 @@ public class CompanyController {
 			return map;
 		}
 	}
-	@RequestMapping(value = "/companies/create_company", consumes = {MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
+	@RequestMapping(value = "/companies/createCompany", consumes = {MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
 	public Object createCompany(@RequestBody Company company) {
 		
 			int res = cs.createCompany(company);

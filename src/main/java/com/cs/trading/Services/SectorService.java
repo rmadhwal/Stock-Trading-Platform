@@ -31,5 +31,9 @@ public class SectorService {
 		return sectorRepo.deleteMarketSector(sector);
 	}
 	
+	public Sector getSectorById(int id) {
+		return sectorRepo.getSectorById(id);
+	}
+	
 	
 }

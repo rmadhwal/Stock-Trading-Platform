@@ -57,6 +57,14 @@ public class SectorRepository {
 		return deleteMarketSector(sector.getId());
 	}
 	
+	public Sector getSectorById(int id) {
+		try {
+			return jdbcTemplate.queryForObject("select * FROM sectors WHERE id=?", new SectorRowMapper(),id);
+		}catch(org.springframework.dao.EmptyResultDataAccessException ex) {
+			return null;
+		}
+	}
+	
 	
 	class SectorRowMapper implements RowMapper<Sector>
 	{

@@ -41,7 +41,7 @@ public class CompanyControllerTest {
 		.get("/companies")
 		.then()
 		.statusCode(200)
-		.body("size()", equalTo(4));
+		.body("size()", equalTo(5));
 	}
 	
 	@Test
@@ -56,7 +56,7 @@ public class CompanyControllerTest {
 			.contentType(ContentType.JSON)
 	        .body(map)
         .when()
-        	.post("/companies/")
+        	.post("/companies/createCompany")
         .then()
 			.statusCode(200);
 	}
@@ -79,8 +79,15 @@ public class CompanyControllerTest {
 		.get("/companies")
 		.then()
 		.statusCode(200)
-		.body("size()", equalTo(3));
-		
+		.body("size()", equalTo(4));
 	}
+	
 
+	@Test
+	public void WhenSearchCompanyWithLettersThenShouldReturn2Companies() {
+		when()
+    	.get("/companies/sort?start_with=COM")
+    	.then()
+    	.body("[0].symbol", equalTo("COMPANY_WITH_ORDERS"));
+	}
 }
