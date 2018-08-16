@@ -26,11 +26,6 @@ public class TraderRepository {
 	
 	public int createTrader(Trader trader) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-//		jdbcTemplate.update("INSERT INTO companies (symbol, name, sectorid) VALUES (?,?,?)",
-//				company.getSymbol(),
-//				company.getName(),
-//				company.getSector_id()
-//				);
     	jdbcTemplate.update(
     	    new PreparedStatementCreator() {
     	    	String sql = "INSERT INTO users (firstname, lastname, password, phone, email, role) VALUES (?,?,?,?,?,?)";
@@ -53,11 +48,26 @@ public class TraderRepository {
 	}
 	
 	public List<User> findAll() {
-		return jdbcTemplate.query("select * from users", new UserRowMapper());
+		return jdbcTemplate.query("select * from users where role = \'TRADER\'", new UserRowMapper());
 	}
 	
 	public User findUserById(int id) {
-		return jdbcTemplate.queryForObject("select * from users where id=?", new UserRowMapper(), id);
+		return jdbcTemplate.queryForObject("select * from users where role = \'TRADER\' and id=?", new UserRowMapper(), id);
+	}
+	
+	public List<Trader> findTopNTradersByNumber(int limit){
+		return jdbcTemplate.query("select * " + 
+				"from users " + 
+				"inner join (select ownerid, count(id) as numTrade from orders group by ownerid order by numTrade desc limit ?) as order_count " + 
+				"on order_count.ownerid = users.id", new TraderByNumTradeRowMapper(), limit);
+	}
+	
+	public List<Trader> findTopNTradersByVolume(int limit){
+//		return jdbcTemplate.query("select * " + 
+//				"from users " + 
+//				"inner join (select ownerid, count(id) as numTrade from orders group by ownerid order by numTrade desc limit ?) as order_count " + 
+//				"on order_count.ownerid = users.id", new TraderByVolumeRowMapper(), limit);
+		return null; 
 	}
 	
 	class UserRowMapper implements RowMapper<User>
@@ -72,7 +82,40 @@ public class TraderRepository {
 			user.setPassword(rs.getString("password"));
 			user.setPhone(rs.getLong("phone"));
 			user.setRole(Role.valueOf(rs.getString("role")));
-//			user.setRole(Role.toSetring(rs.getString("role"));
+			return user;
+		}
+	}
+	
+	class TraderByNumTradeRowMapper implements RowMapper<Trader>
+	{
+		@Override
+		public Trader mapRow(ResultSet rs, int rowNum) throws SQLException{
+			Trader user = new Trader();
+			user.setId(rs.getInt("id"));
+			user.setEmail(rs.getString("email"));
+			user.setFirstName(rs.getString("firstname"));
+			user.setLastName(rs.getString("lastname"));
+			user.setPassword(rs.getString("password"));
+			user.setPhone(rs.getLong("phone"));
+			user.setRole(Role.valueOf(rs.getString("role")));
+			user.setNumTrades(rs.getInt("numtrade"));
+			return user;
+		}
+	}
+	
+	class TraderByVolumeRowMapper implements RowMapper<User>
+	{
+		@Override
+		public Trader mapRow(ResultSet rs, int rowNum) throws SQLException{
+			Trader user = new Trader();
+			user.setId(rs.getInt("id"));
+			user.setEmail(rs.getString("email"));
+			user.setFirstName(rs.getString("firstname"));
+			user.setLastName(rs.getString("lastname"));
+			user.setPassword(rs.getString("password"));
+			user.setPhone(rs.getLong("phone"));
+			user.setRole(Role.valueOf(rs.getString("role")));
+			user.setVolume(Integer.getInteger(rs.getString("volume")));
 			return user;
 		}
 	}
