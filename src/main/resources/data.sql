@@ -31,13 +31,6 @@ insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quan
 
 insert into companies(symbol, name, sectorid) values('COMPANY_WITH_ORDERS_2','COMPANY_WITHOUT_ORDERS_2',44)
 
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (12, 'MARKET','OPEN','BUY','05-Jul-2018 12:08:56.235',50,19.99,100,'COMPANY_WITH_ORDERS',999)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (13,'LIMIT','OPEN','BUY','04-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',0)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (14,'LIMIT','OPEN','BUY','06-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',0)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (15,'LIMIT','OPEN','BUY','07-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2',0)
-
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (16, 'MARKET','OPEN','BUY','05-Jul-2018 12:08:56.235',50,19.99,100,'COMPANY_WITH_ORDERS_2',999)
-insert into orders(id, ordertype,status,side,timestamp,filledQuantity,price,quantity,tickerSymbol,ownerid) values (17,'LIMIT','OPEN','SELL','04-Jul-2018 12:08:56.235',50,19.99,50,'COMPANY_WITH_ORDERS2_2',0)
 
 insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (12, 13, 50, 19.99, '04-Jul-2018 12:08:56.236')
 insert into transactions(buyorderid, sellorderid, quantity, price, timestamp) values (12, 13, 50, 111.99, '05-Jul-2018 12:08:56.236')
