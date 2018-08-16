@@ -22,10 +22,12 @@ public class TransactionRepository {
 	public List<Transaction> findAll() {
 		return jdbcTemplate.query("select * from transactions", new TransactionRowMapper());
 	}
+
 	
 	public Transaction findTransactionById(int id) {
 		return jdbcTemplate.queryForObject("select * from transactions where id=?", new TransactionRowMapper(), id);
 	}
+
 
 	public int addTransaction(int buyOrderId, int sellOrderId, int quantity, double price, Date timestamp){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
