@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 import com.cs.trading.Repositories.TraderRepository;
 
@@ -18,7 +19,7 @@ public class UserController {
 	TraderRepository tr;
 	
 	@RequestMapping(value="/users", method=RequestMethod.GET)
-	public List<User> returnAllUsers() {
+	public List<Trader> returnAllUsers() {
 		return tr.findAll();
 	}
 	

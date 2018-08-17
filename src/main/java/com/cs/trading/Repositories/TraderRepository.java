@@ -5,12 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import com.cs.trading.Models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -19,6 +15,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.cs.trading.Models.Role;
+import com.cs.trading.Models.Trader;
+import com.cs.trading.Models.User;
+import com.cs.trading.Services.TransactionService;
+
 @Repository
 public class TraderRepository {
 	@Autowired
@@ -26,11 +27,6 @@ public class TraderRepository {
 	
 	public int createTrader(Trader trader) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-//		jdbcTemplate.update("INSERT INTO companies (symbol, name, sectorid) VALUES (?,?,?)",
-//				company.getSymbol(),
-//				company.getName(),
-//				company.getSector_id()
-//				);
     	jdbcTemplate.update(
     	    new PreparedStatementCreator() {
     	    	String sql = "INSERT INTO users (firstname, lastname, password, phone, email, role) VALUES (?,?,?,?,?,?)";
@@ -52,19 +48,26 @@ public class TraderRepository {
     	return keyHolder.getKey().intValue();
 	}
 	
-	public List<User> findAll() {
-		return jdbcTemplate.query("select * from users", new UserRowMapper());
+	public List<Trader> findAll() {
+		return jdbcTemplate.query("select * from users where role = \'TRADER\'", new UserRowMapper());
 	}
 	
 	public User findUserById(int id) {
-		return jdbcTemplate.queryForObject("select * from users where id=?", new UserRowMapper(), id);
+		return jdbcTemplate.queryForObject("select * from users where role = \'TRADER\' and id=?", new UserRowMapper(), id);
 	}
 	
-	class UserRowMapper implements RowMapper<User>
+	public List<Trader> findTopNTradersByNumber(int limit){
+		return jdbcTemplate.query("select * " + 
+				"from users " + 
+				"inner join (select ownerid, count(id) as numTrade from orders group by ownerid order by numTrade desc limit ?) as order_count " + 
+				"on order_count.ownerid = users.id", new TraderByNumTradeRowMapper(), limit);
+	}
+	
+	class UserRowMapper implements RowMapper<Trader>
 	{
 		@Override
-		public User mapRow(ResultSet rs, int rowNum) throws SQLException{
-			User user = new Trader();
+		public Trader mapRow(ResultSet rs, int rowNum) throws SQLException{
+			Trader user = new Trader();
 			user.setId(rs.getInt("id"));
 			user.setEmail(rs.getString("email"));
 			user.setFirstName(rs.getString("firstname"));
@@ -72,7 +75,40 @@ public class TraderRepository {
 			user.setPassword(rs.getString("password"));
 			user.setPhone(rs.getLong("phone"));
 			user.setRole(Role.valueOf(rs.getString("role")));
-//			user.setRole(Role.toSetring(rs.getString("role"));
+			return user;
+		}
+	}
+	
+	class TraderByNumTradeRowMapper implements RowMapper<Trader>
+	{
+		@Override
+		public Trader mapRow(ResultSet rs, int rowNum) throws SQLException{
+			Trader user = new Trader();
+			user.setId(rs.getInt("id"));
+			user.setEmail(rs.getString("email"));
+			user.setFirstName(rs.getString("firstname"));
+			user.setLastName(rs.getString("lastname"));
+			user.setPassword(rs.getString("password"));
+			user.setPhone(rs.getLong("phone"));
+			user.setRole(Role.valueOf(rs.getString("role")));
+			user.setNumTrades(rs.getInt("numtrade"));
+			return user;
+		}
+	}
+	
+	class TraderByVolumeRowMapper implements RowMapper<User>
+	{
+		@Override
+		public Trader mapRow(ResultSet rs, int rowNum) throws SQLException{
+			Trader user = new Trader();
+			user.setId(rs.getInt("id"));
+			user.setEmail(rs.getString("email"));
+			user.setFirstName(rs.getString("firstname"));
+			user.setLastName(rs.getString("lastname"));
+			user.setPassword(rs.getString("password"));
+			user.setPhone(rs.getLong("phone"));
+			user.setRole(Role.valueOf(rs.getString("role")));
+			user.setVolume(Integer.getInteger(rs.getString("volume")));
 			return user;
 		}
 	}

@@ -66,6 +66,11 @@ public class OrderController {
 		return os.findOrdersBySymbol(symbol);
 	}
 
+    @RequestMapping(value="/orders/sorted/{parameter}", method=RequestMethod.GET)
+    public List<Order> returnAllOrdersSortedBy(@PathVariable(value="parameter") String parameter) {
+        return os.findOrdersSortedBy(parameter);
+    }
+
 	@RequestMapping(value="/orders/limit/buy", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)
 	public int placeLimitBuyOrder(Principal principal, Double price, Integer quantity, String tickerSymbol) {
 		return os.placeOrder(OrderType.LIMIT, Status.OPEN, Side.BUY, new Date(), 0, price, quantity, tickerSymbol, Integer.parseInt(principal.getName()));
@@ -88,7 +93,7 @@ public class OrderController {
 
 	@RequestMapping(value="/orders/cancel/{id}", produces={MediaType.APPLICATION_JSON_VALUE})
 	public int deleteOrder(Principal principal, @PathVariable(value="id") int id) {
-		return os.deleteOrder(id, Integer.parseInt(principal.getName()));
+		return os.cancelOrder(id, Integer.parseInt(principal.getName()));
 	}
 
 	@RequestMapping(value="/orders/update", produces={MediaType.APPLICATION_JSON_VALUE}, method=RequestMethod.POST)

@@ -3,6 +3,8 @@ package com.example.demo.Controllers;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.is;
+
 
 import org.apache.http.HttpStatus;
 import org.junit.Before;
@@ -34,36 +36,21 @@ public class AdminControllerTest {
 	}
 	
 	@Test
-	public void allTradersReturned(){
-		Response response =
-		given()
-			.auth().basic("john", "smith")
-			.accept(MediaType.APPLICATION_JSON_VALUE).
-		when()
-			.get("/traders").
-		then()
-			.statusCode(HttpStatus.SC_OK).
-		and()
-			.extract().response();
-		
-		Trader[] jsonResponse = response.as(Trader[].class);
-		//extract the email of the first two traders 
-		assertEquals("kevin.tang@gmail.com", jsonResponse[0].getEmail());
-		assertEquals("siva.lim@gmail.com", jsonResponse[1].getEmail());
-	}
-	
-	@Test
-	public void createNewTrader(){
+	public void allTradersReturned() {
 		Response response =
 				given()
-					.auth().basic("john", "smith")
-					.accept(MediaType.APPLICATION_JSON_VALUE).
-				when()
-					.get("/createTrader").
-				then()
-					.statusCode(HttpStatus.SC_OK).
-				and()
-					.extract().response();
-				
+						.auth().basic("1", "{noop}123456")
+						.accept(MediaType.APPLICATION_JSON_VALUE).
+						when()
+						.get("/traders").
+						then()
+						.statusCode(HttpStatus.SC_OK).
+						and()
+						.extract().response();
+
+		Trader[] jsonResponse = response.as(Trader[].class);
+		//extract the email of the first two traders
+		assertEquals("siva.lim@gmail.com", jsonResponse[0].getEmail());
+		assertEquals("xyz.tan@gmail.com", jsonResponse[1].getEmail());
 	}
 }

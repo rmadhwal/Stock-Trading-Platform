@@ -3,6 +3,7 @@ package com.cs.trading.Controllers;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,7 +17,9 @@ import com.cs.trading.Models.Status;
 import com.cs.trading.Models.Trader;
 import com.cs.trading.Models.User;
 import com.cs.trading.Repositories.AdminRepository;
+import com.cs.trading.Repositories.TraderRepository;
 import com.cs.trading.Services.AdminService;
+import com.cs.trading.Services.TraderService;
 
 @RestController
 public class TraderController {
@@ -26,6 +29,12 @@ public class TraderController {
 	
 	@Autowired
 	AdminService as; 
+	
+	@Autowired
+	TraderService ts; 
+	
+	@Autowired
+	TraderRepository tr; 
 	
 	
 	@RequestMapping(value="/traders", method=RequestMethod.GET)
@@ -57,6 +66,16 @@ public class TraderController {
 	@RequestMapping("/traders/listOrdersByStatus")
 	public HashMap<Status, List<Order>> listTotalNumerOfOrdersByStatus() {
 		return ar.retrieveOrdersByStatus();
+	}
+	
+	@RequestMapping("/traders/topNTradersByNum/{limit}")
+	public List<Trader> listTopNTradersByNum(@PathVariable(value="limit") int limit) {
+		return tr.findTopNTradersByNumber(limit);
+	}
+	
+	@RequestMapping("/traders/topNTradersByVolume/{limit}")
+	public List<String> listTopNTradersByVolume(@PathVariable(value="limit") int limit) {
+		return ts.findTopNTradersByVolume(limit);
 	}
 }
 

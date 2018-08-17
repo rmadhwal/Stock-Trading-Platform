@@ -37,19 +37,6 @@ public class OrderRepository {
 		return jdbcTemplate.queryForObject("select * from orders where id=?", new OrderRowMapper(), id);
 	}
 
-	public List<Order> findOrdersGroupedBySide() {
-		return jdbcTemplate.query("select * from orders group by side", new OrderRowMapper());
-	}
-
-	public List<Order> findOrdersGroupedByType() {
-		return jdbcTemplate.query("select * from orders group by type", new OrderRowMapper());
-	}
-
-	public List<Order> findOrdersGroupedByStatus() {
-		return jdbcTemplate.query("select * from orders group by status", new OrderRowMapper());
-	}
-
-
 	public List<Order> findOrdersByTraderId(int traderId) {
 		return jdbcTemplate.query("select * from orders where ownerid=?", new OrderRowMapper(), traderId);
 	}
@@ -70,20 +57,33 @@ public class OrderRepository {
 	public List<Order> findOrdersBySymbol(String tickerSymbol) {
 		return jdbcTemplate.query("select * from orders where tickersymbol=?", new OrderRowMapper(), tickerSymbol);
 	}
-	
+
 	public List<Order> findOrdersBySymbol(String tickerSymbol, Date startTime, Date endTime, String sort) {
-		
+
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
 		if(sort.equalsIgnoreCase("DESC")){
 			return jdbcTemplate.query("select * from orders where tickersymbol=? and (timestamp between ? and ?) order by timestamp desc ", new OrderRowMapper(), tickerSymbol, formatter.format(startTime),formatter.format(endTime));
 		}else{
 			return jdbcTemplate.query("select * from orders where tickersymbol=? and (timestamp between ? and ?) order by timestamp asc ", new OrderRowMapper(), tickerSymbol, formatter.format(startTime),formatter.format(endTime));
 		}
-		}
-	
-	public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, int filledQuantity, Double price, int quantity, String tickerSymbol, int traderId){
 		
-		String timestampString = Order.formatter.format(timestamp);
+	}
+
+	public List<Order> findOrdersSortedBySymbol() {
+		return jdbcTemplate.query("select * from orders order by tickersymbol", new OrderRowMapper());
+	}
+
+	public List<Order> findOrdersSortedByPrice() {
+		return jdbcTemplate.query("select * from orders order by price", new OrderRowMapper());
+	}
+
+	public int findLatestId() {
+		return jdbcTemplate.queryForObject("select MAX(id) from orders", Integer.class);
+	}
+
+	public int placeOrder(OrderType orderType, Status status, Side side, Date timestamp, int filledQuantity, Double price, int quantity, String tickerSymbol, int traderId){
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
+		String timestampString = formatter.format(timestamp);
 		String orderTypeString = orderType.name();
 		String statusString = status.name();
 		String sideString = side.name();
@@ -166,5 +166,4 @@ public class OrderRepository {
 
 		}
 	}
-	
 }

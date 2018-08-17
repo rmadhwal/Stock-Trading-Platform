@@ -23,9 +23,12 @@ public class TransactionRepository {
 		return jdbcTemplate.query("select * from transactions", new TransactionRowMapper());
 	}
 
-	
 	public Transaction findTransactionById(int id) {
 		return jdbcTemplate.queryForObject("select * from transactions where id=?", new TransactionRowMapper(), id);
+	}
+
+	public int findLatestId() {
+		return jdbcTemplate.queryForObject("select MAX(id) from transactions", Integer.class);
 	}
 
 
